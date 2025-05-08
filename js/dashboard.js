@@ -13,190 +13,26 @@ function updateDashboardUI() {
     const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
     
     if (moodData.length > 0) {
-        // Hide empty state
-        document.getElementById('chart-container').classList.remove('empty-state');
-        document.getElementById('mood-chart').style.display = 'block';
+        // Update mood stats
+        displayMoodStats();
         
-        // Generate chart
-        generateChart();
+        // Display simple chart
+        displaySimpleChart();
         
         // Display weekly summary
         displayWeeklySummary();
     }
 }
 
-// Generate mood chart
-function generateChart() {
+// Display mood stats (counts for each mood type)
+function displayMoodStats() {
     const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+    const statsContainer = document.getElementById('mood-stats');
     
-    // If no data, don't generate chart
-    if (moodData.length === 0) return;
+    if (!statsContainer || moodData.length === 0) return;
     
-    // Sort data by date
-    moodData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-    // Prepare data for chart
-    const dates = moodData.map(entry => {
-        const date = new Date(entry.date);
-        return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-    });
-    
-    const moodValues = moodData.map(entry => getMoodValue(entry.moodWord));
-    const moodEmojis = moodData.map(entry => entry.moodEmoji);
-    
-    // Create color gradients based on mood values
-    const gradientColors = moodValues.map(value => {
-        if (value >= 4) return 'rgba(102, 187, 106, 0.8)'; // Green for happy
-        if (value >= 3) return 'rgba(79, 195, 247, 0.8)'; // Blue for neutral
-        if (value >= 2) return 'rgba(255, 167, 38, 0.8)'; // Orange for anxious
-        return 'rgba(239, 83, 80, 0.8)'; // Red for angry
-    });
-    
-    // Get chart context
-    const ctx = document.getElementById('mood-chart').getContext('2d');
-    
-    // Destroy existing chart if it exists
-    if (window.moodChart) {
-        window.moodChart.destroy();
-    }
-    
-    // Create new chart
-    window.moodChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: dates,
-            datasets: [
-                {
-                    label: 'Mood Level',
-                    data: moodValues,
-                    backgroundColor: gradientColors,
-                    borderColor: gradientColors.map(color => color.replace('0.8', '1')),
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    barThickness: 20,
-                    maxBarThickness: 30
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    titleColor: '#333',
-                    bodyColor: '#333',
-                    titleFont: {
-                        size: 14,
-                        weight: 'bold'
-                    },
-                    bodyFont: {
-                        size: 14
-                    },
-                    padding: 12,
-                    borderColor: '#ddd',
-                    borderWidth: 1,
-                    displayColors: false,
-                    callbacks: {
-                        title: function(tooltipItems) {
-                            const index = tooltipItems[0].dataIndex;
-                            return formatDate(moodData[index].date);
-                        },
-                        label: function(context) {
-                            const index = context.dataIndex;
-                            const entry = moodData[index];
-                            return `${entry.moodEmoji} ${entry.moodWord}${entry.note ? ': ' + entry.note : ''}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 5,
-                    grid: {
-                        display: true,
-                        color: 'rgba(200, 200, 200, 0.2)'
-                    },
-                    ticks: {
-                        stepSize: 1,
-                        font: {
-                            size: 12
-                        },
-                        callback: function(value) {
-                            switch (value) {
-                                case 5: return 'Senang';
-                                case 4: return 'Baik';
-                                case 3: return 'Netral';
-                                case 2: return 'Cemas';
-                                case 1: return 'Marah';
-                                case 0: return '';
-                                default: return '';
-                            }
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        font: {
-                            size: 12
-                        }
-                    }
-                }
-            },
-            animation: {
-                duration: 1000,
-                easing: 'easeOutQuart'
-            }
-        },
-        plugins: [{
-            id: 'emojisOnTop',
-            afterDatasetsDraw: function(chart) {
-                const ctx = chart.ctx;
-                chart.data.datasets.forEach((dataset, datasetIndex) => {
-                    const meta = chart.getDatasetMeta(datasetIndex);
-                    if (!meta.hidden) {
-                        meta.data.forEach((element, index) => {
-                            // Draw emoji on top of each bar
-                            ctx.font = '16px Arial';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
-                            const emoji = moodEmojis[index];
-                            const position = element.getCenterPoint();
-                            ctx.fillText(emoji, position.x, position.y - 5);
-                        });
-                    }
-                });
-            }
-        }]
-    });
-    
-    // Add a second chart showing mood distribution
-    createMoodDistributionChart();
-}
-
-// Create a pie chart showing mood distribution
-function createMoodDistributionChart() {
-    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
-    
-    // If no data, don't generate chart
-    if (moodData.length === 0) return;
-    
-    // Create a new canvas for the pie chart
-    const container = document.getElementById('chart-container');
-    if (!document.getElementById('mood-distribution-chart')) {
-        const canvas = document.createElement('canvas');
-        canvas.id = 'mood-distribution-chart';
-        canvas.style.marginTop = '20px';
-        canvas.style.height = '180px';
-        container.appendChild(canvas);
-    }
+    // Clear empty state
+    statsContainer.innerHTML = '';
     
     // Count mood occurrences
     const moodCounts = {
@@ -212,99 +48,97 @@ function createMoodDistributionChart() {
         }
     });
     
-    // Prepare data for chart
-    const labels = Object.keys(moodCounts).map(mood => {
-        const count = moodCounts[mood];
-        return count > 0 ? mood.charAt(0).toUpperCase() + mood.slice(1) : null;
-    }).filter(Boolean);
-    
-    const data = Object.values(moodCounts).filter(count => count > 0);
-    
-    // Colors for each mood
-    const backgroundColors = [
-        'rgba(102, 187, 106, 0.8)', // Green for senang
-        'rgba(79, 195, 247, 0.8)',  // Blue for netral
-        'rgba(255, 167, 38, 0.8)',  // Orange for cemas
-        'rgba(239, 83, 80, 0.8)'    // Red for marah
-    ];
-    
-    // Get chart context
-    const ctx = document.getElementById('mood-distribution-chart').getContext('2d');
-    
-    // Destroy existing chart if it exists
-    if (window.moodDistributionChart) {
-        window.moodDistributionChart.destroy();
-    }
-    
-    // Create new chart
-    window.moodDistributionChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: backgroundColors,
-                borderColor: backgroundColors.map(color => color.replace('0.8', '1')),
-                borderWidth: 1,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        font: {
-                            size: 12
-                        },
-                        padding: 15
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'Distribusi Mood',
-                    font: {
-                        size: 14,
-                        weight: 'bold'
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 10
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    titleColor: '#333',
-                    bodyColor: '#333',
-                    bodyFont: {
-                        size: 14
-                    },
-                    padding: 12,
-                    borderColor: '#ddd',
-                    borderWidth: 1,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            const label = context.label || '';
-                            const value = context.raw || 0;
-                            const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
-                            const percentage = Math.round((value / total) * 100);
-                            return `${label}: ${value} (${percentage}%)`;
-                        }
-                    }
-                }
-            },
-            cutout: '60%',
-            animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 1000,
-                easing: 'easeOutQuart'
-            }
-        }
+    // Create mood stat items
+    Object.keys(moodCounts).forEach(mood => {
+        // Skip moods with 0 count
+        if (moodCounts[mood] === 0) return;
+        
+        const moodEmoji = getMoodEmoji(mood);
+        const statItem = document.createElement('div');
+        statItem.className = 'mood-stat-item';
+        
+        statItem.innerHTML = `
+            <div class="mood-emoji">${moodEmoji}</div>
+            <div class="mood-count">${moodCounts[mood]}</div>
+            <div class="mood-label">${mood.charAt(0).toUpperCase() + mood.slice(1)}</div>
+        `;
+        
+        statsContainer.appendChild(statItem);
     });
+    
+    // Add total count
+    const totalItem = document.createElement('div');
+    totalItem.className = 'mood-stat-item';
+    const totalCount = Object.values(moodCounts).reduce((sum, count) => sum + count, 0);
+    
+    totalItem.innerHTML = `
+        <div class="mood-emoji"><i class="fas fa-calculator"></i></div>
+        <div class="mood-count">${totalCount}</div>
+        <div class="mood-label">Total</div>
+    `;
+    
+    statsContainer.appendChild(totalItem);
+}
+
+// Display simple chart visualization
+function displaySimpleChart() {
+    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+    const chartContainer = document.getElementById('simple-chart');
+    
+    if (!chartContainer || moodData.length === 0) return;
+    
+    // Clear empty state
+    chartContainer.innerHTML = '';
+    
+    // Sort data by date
+    const sortedData = [...moodData].sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Limit to last 7 entries for simplicity
+    const recentData = sortedData.slice(-7);
+    
+    // Create simple chart container
+    const chartElement = document.createElement('div');
+    chartElement.className = 'simple-mood-chart';
+    
+    // Create bars for each mood entry
+    recentData.forEach(entry => {
+        const moodValue = getMoodValue(entry.moodWord);
+        const heightPercentage = (moodValue / 5) * 100;
+        
+        // Choose color based on mood
+        let barColor;
+        if (moodValue >= 4) barColor = 'rgba(102, 187, 106, 0.8)'; // Green for happy
+        else if (moodValue >= 3) barColor = 'rgba(79, 195, 247, 0.8)'; // Blue for neutral
+        else if (moodValue >= 2) barColor = 'rgba(255, 167, 38, 0.8)'; // Orange for anxious
+        else barColor = 'rgba(239, 83, 80, 0.8)'; // Red for angry
+        
+        // Format date
+        const date = new Date(entry.date);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}`;
+        
+        // Create bar element
+        const bar = document.createElement('div');
+        bar.className = 'chart-bar';
+        bar.style.height = `${heightPercentage}%`;
+        bar.style.backgroundColor = barColor;
+        bar.title = `${entry.moodWord}: ${entry.note || ''}`;
+        
+        // Add date label
+        const label = document.createElement('div');
+        label.className = 'chart-bar-label';
+        label.textContent = formattedDate;
+        bar.appendChild(label);
+        
+        // Add emoji on top
+        const emoji = document.createElement('div');
+        emoji.className = 'chart-bar-emoji';
+        emoji.textContent = entry.moodEmoji;
+        bar.appendChild(emoji);
+        
+        chartElement.appendChild(bar);
+    });
+    
+    chartContainer.appendChild(chartElement);
 }
 
 // Get weekly summary data

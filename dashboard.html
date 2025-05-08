@@ -19,34 +19,32 @@
         <main>
             <section class="card">
                 <h2>Dashboard Emosi Tim</h2>
-                <div class="chart-container empty-state" id="chart-container">
-                    <p><i class="fas fa-chart-line"></i></p>
-                    <p>Belum ada data mood</p>
-                    <p>Mulai dengan mengisi Cek Mood Harian</p>
-                </div>
-                <canvas id="mood-chart" style="display: none;"></canvas>
                 
-                <div class="chart-legend" id="chart-legend" style="display: none;">
-                    <div class="legend-item">
-                        <span class="color-box" style="background-color: rgba(102, 187, 106, 0.8);"></span>
-                        <span>Senang</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="color-box" style="background-color: rgba(79, 195, 247, 0.8);"></span>
-                        <span>Netral</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="color-box" style="background-color: rgba(255, 167, 38, 0.8);"></span>
-                        <span>Cemas</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="color-box" style="background-color: rgba(239, 83, 80, 0.8);"></span>
-                        <span>Marah</span>
+                <!-- Mood Overview -->
+                <div class="mood-overview">
+                    <div class="overview-title">Ringkasan Mood</div>
+                    <div class="mood-stats" id="mood-stats">
+                        <!-- Mood stats will be inserted here -->
+                        <div class="empty-state">
+                            <p><i class="fas fa-chart-pie"></i></p>
+                            <p>Belum ada data mood</p>
+                        </div>
                     </div>
                 </div>
                 
+                <!-- Simple Chart -->
+                <div class="simple-chart-container">
+                    <div class="overview-title">Tren Mood</div>
+                    <div id="simple-chart" class="empty-state">
+                        <p><i class="fas fa-chart-line"></i></p>
+                        <p>Belum ada data mood</p>
+                        <p>Mulai dengan mengisi Cek Mood Harian</p>
+                    </div>
+                </div>
+                
+                <!-- Weekly Summary -->
                 <div class="summary-container">
-                    <h3>Ringkasan Mingguan</h3>
+                    <div class="overview-title">Ringkasan Mingguan</div>
                     <div id="weekly-summary" class="empty-state">
                         <p><i class="fas fa-calendar-week"></i></p>
                         <p>Belum ada ringkasan</p>

@@ -136,12 +136,89 @@ input, select, textarea {
     background-color: var(--accent-color);
 }
 
-.chart-container {
-    min-height: 250px;
-    max-height: 350px;
+/* Simple Dashboard Styles */
+.mood-overview, .simple-chart-container, .summary-container {
     margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.overview-title {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.mood-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.mood-stat-item {
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-width: 60px;
+    flex: 1;
+}
+
+.mood-emoji {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.mood-count {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mood-label {
+    font-size: 12px;
+    color: #777;
+}
+
+.simple-chart-container {
     position: relative;
-    overflow: hidden;
+}
+
+.simple-mood-chart {
+    display: flex;
+    height: 150px;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 10px 0;
+}
+
+.chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-width: 30px;
+}
+
+.chart-bar-label {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10px;
+    color: #777;
+}
+
+.chart-bar-emoji {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px;
 }
 
 .chart-legend {

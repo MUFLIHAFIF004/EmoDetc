@@ -6,30 +6,52 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Check if there's mood data and update UI accordingly
     updateDashboardUI();
+    
+    // Log data to console for debugging
+    console.log('Mood data in localStorage:', localStorage.getItem('moodData'));
 });
 
 // Update dashboard UI based on data availability
 function updateDashboardUI() {
-    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+    // Get mood data from localStorage
+    let moodData = [];
+    try {
+        const storedData = localStorage.getItem('moodData');
+        if (storedData) {
+            moodData = JSON.parse(storedData);
+            console.log('Parsed mood data:', moodData);
+        }
+    } catch (e) {
+        console.error('Error parsing mood data:', e);
+    }
     
-    if (moodData.length > 0) {
+    // Check if we have mood data
+    if (moodData && moodData.length > 0) {
+        console.log('Found mood data, updating UI with', moodData.length, 'entries');
+        
         // Update mood stats
-        displayMoodStats();
+        displayMoodStats(moodData);
         
         // Display simple chart
-        displaySimpleChart();
+        displaySimpleChart(moodData);
         
         // Display weekly summary
-        displayWeeklySummary();
+        displayWeeklySummary(moodData);
+    } else {
+        console.log('No mood data found in localStorage');
     }
 }
 
 // Display mood stats (counts for each mood type)
-function displayMoodStats() {
-    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+function displayMoodStats(moodData) {
     const statsContainer = document.getElementById('mood-stats');
     
-    if (!statsContainer || moodData.length === 0) return;
+    if (!statsContainer || !moodData || moodData.length === 0) {
+        console.log('No data or container for mood stats');
+        return;
+    }
+    
+    console.log('Displaying mood stats for', moodData.length, 'entries');
     
     // Clear empty state
     statsContainer.innerHTML = '';
@@ -81,11 +103,15 @@ function displayMoodStats() {
 }
 
 // Display simple chart visualization
-function displaySimpleChart() {
-    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+function displaySimpleChart(moodData) {
     const chartContainer = document.getElementById('simple-chart');
     
-    if (!chartContainer || moodData.length === 0) return;
+    if (!chartContainer || !moodData || moodData.length === 0) {
+        console.log('No data or container for simple chart');
+        return;
+    }
+    
+    console.log('Displaying simple chart for', moodData.length, 'entries');
     
     // Clear empty state
     chartContainer.innerHTML = '';
@@ -142,11 +168,9 @@ function displaySimpleChart() {
 }
 
 // Get weekly summary data
-function getWeeklySummary() {
-    const moodData = JSON.parse(localStorage.getItem('moodData')) || [];
-    
+function getWeeklySummary(moodData) {
     // If no data, return empty summary
-    if (moodData.length === 0) {
+    if (!moodData || moodData.length === 0) {
         return {
             totalEntries: 0,
             moodCounts: { senang: 0, netral: 0, cemas: 0, marah: 0 },
@@ -223,14 +247,23 @@ function getWeeklySummary() {
 }
 
 // Display weekly summary
-function displayWeeklySummary() {
-    const summary = getWeeklySummary();
+function displayWeeklySummary(moodData) {
     const summaryContainer = document.getElementById('weekly-summary');
     
-    if (!summaryContainer) return;
+    if (!summaryContainer) {
+        console.log('No container for weekly summary');
+        return;
+    }
+    
+    const summary = getWeeklySummary(moodData);
     
     // If no entries, keep empty state
-    if (summary.totalEntries === 0) return;
+    if (summary.totalEntries === 0) {
+        console.log('No entries for weekly summary');
+        return;
+    }
+    
+    console.log('Displaying weekly summary for', summary.totalEntries, 'entries');
     
     // Remove empty state
     summaryContainer.classList.remove('empty-state');

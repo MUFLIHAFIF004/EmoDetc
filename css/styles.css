@@ -137,9 +137,11 @@ input, select, textarea {
 }
 
 .chart-container {
-    min-height: 300px;
+    min-height: 250px;
+    max-height: 350px;
     margin-bottom: 20px;
     position: relative;
+    overflow: hidden;
 }
 
 .chart-legend {

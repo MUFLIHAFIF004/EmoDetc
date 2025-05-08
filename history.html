@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmoDetc - Laporan Mingguan</title>
+    <title>EmoDetc - Riwayat Mood</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -16,15 +16,27 @@
 
         <main>
             <section class="card">
-                <h2>Laporan Mingguan</h2>
-                <div id="report-content" class="empty-state">
-                    <p><i class="fas fa-file-alt"></i></p>
-                    <p>Belum ada laporan</p>
-                    <p>Laporan akan tersedia setelah data mood terkumpul</p>
+                <h2>Riwayat Mood</h2>
+                <div id="history-container" class="empty-state">
+                    <p><i class="fas fa-history"></i></p>
+                    <p>Belum ada riwayat mood</p>
+                    <p>Mulai dengan mengisi Cek Mood Harian</p>
                 </div>
-                <button id="export-pdf" class="btn secondary" disabled>
-                    <i class="fas fa-file-pdf"></i> Download PDF
-                </button>
+                <div class="table-container" id="table-container" style="display: none;">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Emoji</th>
+                                <th>Mood</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History entries will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
 
@@ -41,11 +53,11 @@
                 <i class="fas fa-stream"></i>
                 <span>Feed</span>
             </a>
-            <a href="history.html" class="nav-item">
+            <a href="history.html" class="nav-item active">
                 <i class="fas fa-history"></i>
                 <span>Riwayat</span>
             </a>
-            <a href="report.html" class="nav-item active">
+            <a href="report.html" class="nav-item">
                 <i class="fas fa-file-alt"></i>
                 <span>Laporan</span>
             </a>
@@ -57,6 +69,6 @@
     </div>
 
     <script src="js/common.js"></script>
-    <script src="js/report.js"></script>
+    <script src="js/history.js"></script>
 </body>
 </html>

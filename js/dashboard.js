@@ -194,7 +194,7 @@ function createMoodDistributionChart() {
         const canvas = document.createElement('canvas');
         canvas.id = 'mood-distribution-chart';
         canvas.style.marginTop = '20px';
-        canvas.style.height = '200px';
+        canvas.style.height = '180px';
         container.appendChild(canvas);
     }
     

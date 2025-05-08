@@ -1,39 +1,51 @@
-# EmoDetc - Emotional Detection for Teams
+# EmoDetc - Emotional Detection Team's
 
-EmoDetc is a web application designed to detect and manage emotions within teams during digital projects. This tool helps teams track emotional well-being, identify potential conflicts, and maintain a healthy work environment.
+EmoDetc adalah aplikasi web untuk mendeteksi dan mengelola emosi tim selama proyek digital. Aplikasi ini berjalan secara lokal dengan penyimpanan data di localStorage dan siap untuk di-deploy ke GitHub Pages.
 
-## Features
+## Fitur Utama
 
-- **Mood Check**: Submit your current mood with emoji and descriptive words
-- **Mood Dashboard**: Visualize mood trends with interactive charts
-- **Weekly Summary**: Get insights into the team's emotional state
-- **Mood History**: View past mood entries in a chronological list
-- **Signal Alert**: Receive notifications when team mood is declining
-- **Team Discussion**: Chat with team members while expressing emotions
-- **Team Feed**: Share updates and announcements with the team
-- **Weekly Report**: Generate comprehensive mood reports with recommendations
+- **Cek Mood Harian**: Form untuk memasukkan mood dengan emoji dan kata emosi
+- **Diskusi Tim**: Ruang chat dengan indikator mood untuk setiap pesan
+- **Dashboard Emosi**: Visualisasi tren mood tim dengan grafik interaktif
+- **Feed Tim**: Berbagi update dan pengumuman dengan tim
+- **Laporan Mingguan**: Ringkasan mood tim dengan rekomendasi
 
-## Technology Stack
+## Struktur Aplikasi
+
+Aplikasi terdiri dari beberapa halaman:
+
+1. **Halaman Cek Mood** (`index.html`): Halaman awal untuk input mood harian
+2. **Halaman Diskusi Tim** (`chat.html`): Ruang chat untuk diskusi tim
+3. **Halaman Dashboard** (`dashboard.html`): Visualisasi tren mood tim
+4. **Halaman Feed** (`feed.html`): Berbagi update dengan tim
+5. **Halaman Laporan** (`report.html`): Laporan mingguan mood tim
+
+## Teknologi
 
 - HTML5, CSS3, JavaScript (ES6+)
-- Chart.js for data visualization
-- LocalStorage for data persistence
-- Responsive design for all device sizes
+- Chart.js untuk visualisasi data
+- LocalStorage untuk penyimpanan data
+- Font Awesome untuk ikon
+- Desain responsif untuk semua ukuran perangkat
 
-## Getting Started
+## Cara Menjalankan
 
-1. Clone this repository
-2. Open `index.html` in your browser
-3. No server setup required - all data is stored locally
+1. Clone repositori ini
+2. Buka `index.html` di browser
+3. Tidak memerlukan setup server - semua data disimpan secara lokal
 
 ## Deployment
 
-This application is designed to be deployed as a static website on GitHub Pages.
+Aplikasi ini dirancang untuk di-deploy sebagai website statis di GitHub Pages:
 
-## Data Storage
+1. Push kode ke repositori GitHub
+2. Aktifkan GitHub Pages di pengaturan repositori
+3. Pilih branch main sebagai sumber
 
-All data is stored in the browser's localStorage. No external database is required.
+## Penyimpanan Data
 
-## License
+Semua data disimpan di localStorage browser. Tidak memerlukan database eksternal.
+
+## Lisensi
 
 MIT License

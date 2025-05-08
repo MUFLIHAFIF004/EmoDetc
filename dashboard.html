@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Dashboard Emosi Tim</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js for mood dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EmoDetc</h1>
+            <p>Emotional Detection Team's</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>Dashboard Emosi Tim</h2>
+                <div class="chart-container empty-state" id="chart-container">
+                    <p><i class="fas fa-chart-line"></i></p>
+                    <p>Belum ada data mood</p>
+                    <p>Mulai dengan mengisi Cek Mood Harian</p>
+                </div>
+                <canvas id="mood-chart" style="display: none;"></canvas>
+                
+                <div class="summary-container">
+                    <h3>Ringkasan Mingguan</h3>
+                    <div id="weekly-summary" class="empty-state">
+                        <p><i class="fas fa-calendar-week"></i></p>
+                        <p>Belum ada ringkasan</p>
+                        <p>Data akan muncul setelah beberapa entri mood</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="chat.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Diskusi</span>
+            </a>
+            <a href="feed.html" class="nav-item">
+                <i class="fas fa-stream"></i>
+                <span>Feed</span>
+            </a>
+            <a href="report.html" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Laporan</span>
+            </a>
+        </nav>
+
+        <footer>
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </footer>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

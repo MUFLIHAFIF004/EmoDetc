@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Laporan Mingguan</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EmoDetc</h1>
+            <p>Emotional Detection Team's</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>Laporan Mingguan</h2>
+                <div id="report-content" class="empty-state">
+                    <p><i class="fas fa-file-alt"></i></p>
+                    <p>Belum ada laporan</p>
+                    <p>Laporan akan tersedia setelah data mood terkumpul</p>
+                </div>
+                <button id="export-pdf" class="btn secondary" disabled>
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="chat.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Diskusi</span>
+            </a>
+            <a href="feed.html" class="nav-item">
+                <i class="fas fa-stream"></i>
+                <span>Feed</span>
+            </a>
+            <a href="report.html" class="nav-item active">
+                <i class="fas fa-file-alt"></i>
+                <span>Laporan</span>
+            </a>
+        </nav>
+
+        <footer>
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </footer>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/report.js"></script>
+</body>
+</html>

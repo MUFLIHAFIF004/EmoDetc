@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Emotional Detection for Teams</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js for mood dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EmoDetc - Emotional Detection for Teams</h1>
+            <p>Track, analyze, and improve your team's emotional well-being</p>
+        </header>
+
+        <main>
+            <!-- Mood Check Section -->
+            <section class="card" id="mood-check">
+                <h2>Check Your Mood</h2>
+                <form id="mood-form">
+                    <div class="form-group">
+                        <label for="mood-emoji">Select Mood Emoji:</label>
+                        <div class="emoji-selector">
+                            <span class="emoji" data-emoji="😀">😀</span>
+                            <span class="emoji" data-emoji="😊">😊</span>
+                            <span class="emoji" data-emoji="😐">😐</span>
+                            <span class="emoji" data-emoji="😔">😔</span>
+                            <span class="emoji" data-emoji="😡">😡</span>
+                        </div>
+                        <input type="hidden" id="mood-emoji" name="moodEmoji" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mood-word">Select Mood:</label>
+                        <select id="mood-word" name="moodWord" required>
+                            <option value="">-- Select Mood --</option>
+                            <option value="senang">Senang</option>
+                            <option value="cemas">Cemas</option>
+                            <option value="frustrasi">Frustrasi</option>
+                            <option value="netral">Netral</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mood-date">Date:</label>
+                        <input type="date" id="mood-date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mood-note">Notes (optional):</label>
+                        <textarea id="mood-note" name="note" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn primary">Submit Mood</button>
+                </form>
+            </section>
+
+            <!-- Mood Dashboard Section -->
+            <section class="card" id="mood-dashboard">
+                <h2>Mood Dashboard</h2>
+                <div class="chart-container">
+                    <canvas id="mood-chart"></canvas>
+                </div>
+                <div class="summary-container">
+                    <h3>Weekly Summary</h3>
+                    <div id="weekly-summary">
+                        <!-- Weekly summary will be inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mood History Section -->
+            <section class="card" id="mood-history">
+                <h2>Mood History</h2>
+                <div class="table-container">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Emoji</th>
+                                <th>Mood</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History entries will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Signal Alert Section -->
+            <section class="card" id="signal-alert">
+                <h2>Team Mood Alerts</h2>
+                <div id="alert-container">
+                    <!-- Alerts will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Team Discussion Section -->
+            <section class="card" id="team-discussion">
+                <h2>Team Discussion</h2>
+                <div class="chat-container">
+                    <div id="chat-messages">
+                        <!-- Chat messages will be inserted here -->
+                    </div>
+                    <form id="chat-form">
+                        <div class="form-group">
+                            <select id="chat-mood" name="chatMood">
+                                <option value="neutral">😐 Neutral</option>
+                                <option value="happy">😊 Happy</option>
+                                <option value="sad">😔 Sad</option>
+                                <option value="angry">😡 Angry</option>
+                            </select>
+                            <input type="text" id="chat-message" name="message" placeholder="Type your message..." required>
+                            <button type="submit" class="btn">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Team Feed Section -->
+            <section class="card" id="team-feed">
+                <h2>Team Feed</h2>
+                <form id="feed-form">
+                    <div class="form-group">
+                        <textarea id="feed-content" name="content" rows="3" placeholder="Share something with your team..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary">Add Feed</button>
+                </form>
+                <div id="feed-container">
+                    <!-- Feed entries will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Weekly Report Section -->
+            <section class="card" id="weekly-report">
+                <h2>Weekly Mood Report</h2>
+                <div id="report-content">
+                    <!-- Report content will be inserted here -->
+                </div>
+                <button id="export-pdf" class="btn secondary">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

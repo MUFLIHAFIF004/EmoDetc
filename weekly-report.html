@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Weekly Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="index.html" class="nav-link">Beranda</a>
+                    <a href="mood-check.html" class="nav-link">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link active">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="index.html" class="block py-2 nav-link">Beranda</a>
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow weekly-report-container">
+        <!-- Report Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-800">Laporan Mingguan</h1>
+                <p class="text-gray-600">Ringkasan mood dan aktivitas tim selama seminggu</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <div class="flex space-x-2">
+                    <select id="week-selector" class="bg-white border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="current">Minggu Ini (15-21 Mei 2025)</option>
+                        <option value="previous">Minggu Lalu (8-14 Mei 2025)</option>
+                        <option value="twoWeeksAgo">Dua Minggu Lalu (1-7 Mei 2025)</option>
+                    </select>
+                    <button id="export-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Report Summary -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4">Ringkasan Minggu Ini</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-2">Mood Dominan</h3>
+                    <div class="flex items-center">
+                        <div class="mood-indicator bg-green-500 mr-2"></div>
+                        <span class="text-2xl font-bold">Senang (45%)</span>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-2">Perubahan Mood</h3>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                        </svg>
+                        <span class="text-2xl font-bold text-green-600">+10%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-2">Diskusi Aktif</h3>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <span class="text-2xl font-bold">12 Diskusi</span>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-2">Partisipasi Tim</h3>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span class="text-2xl font-bold">85%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-3">Tren Mood Mingguan</h3>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="weekly-mood-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-indigo-800 mb-3">Distribusi Mood Tim</h3>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="weekly-distribution-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top Discussions -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4">Diskusi Teratas</h2>
+            
+            <div class="space-y-4">
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold text-lg">Pengembangan Fitur Baru</h3>
+                        <span class="text-sm text-gray-500">18 Mei 2025</span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Diskusi tentang fitur baru yang akan dikembangkan untuk aplikasi. Tim menunjukkan antusiasme tinggi.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="mood-indicator bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium">Mood Dominan: Senang</span>
+                        </div>
+                        <span class="text-sm text-gray-500">8 Peserta</span>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold text-lg">Bug Fixing</h3>
+                        <span class="text-sm text-gray-500">16 Mei 2025</span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Diskusi tentang perbaikan bug pada aplikasi. Beberapa anggota tim menunjukkan frustrasi.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="mood-indicator bg-yellow-500 mr-2"></div>
+                            <span class="text-sm font-medium">Mood Dominan: Netral</span>
+                        </div>
+                        <span class="text-sm text-gray-500">5 Peserta</span>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold text-lg">Desain UI/UX</h3>
+                        <span class="text-sm text-gray-500">15 Mei 2025</span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Diskusi tentang perubahan desain UI/UX pada aplikasi. Tim menunjukkan kreativitas tinggi.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="mood-indicator bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium">Mood Dominan: Senang</span>
+                        </div>
+                        <span class="text-sm text-gray-500">6 Peserta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mood Insights and Recommendations -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-indigo-800 mb-4">Insight Mood</h2>
+                
+                <div class="space-y-4">
+                    <div class="p-3 bg-green-100 text-green-800 rounded-lg border border-green-200">
+                        <h3 class="font-semibold mb-1">Tren Positif</h3>
+                        <p>Mood tim secara keseluruhan menunjukkan peningkatan dibandingkan minggu lalu.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-200">
+                        <h3 class="font-semibold mb-1">Area Perhatian</h3>
+                        <p>Beberapa anggota tim menunjukkan mood "Marah" saat diskusi Bug Fixing.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-blue-100 text-blue-800 rounded-lg border border-blue-200">
+                        <h3 class="font-semibold mb-1">Pola Mood</h3>
+                        <p>Mood tim cenderung lebih positif di awal dan akhir minggu, namun menurun di tengah minggu.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-indigo-800 mb-4">Rekomendasi</h2>
+                
+                <div class="space-y-4">
+                    <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                        <h3 class="font-semibold text-indigo-800 mb-1">Team Building</h3>
+                        <p class="text-gray-700">Pertimbangkan untuk mengadakan sesi team building untuk meningkatkan kohesi tim.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                        <h3 class="font-semibold text-indigo-800 mb-1">Pelatihan Manajemen Stress</h3>
+                        <p class="text-gray-700">Berikan pelatihan manajemen stress untuk membantu anggota tim mengatasi frustrasi.</p>
+                    </div>
+                    
+                    <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                        <h3 class="font-semibold text-indigo-800 mb-1">Apresiasi Tim</h3>
+                        <p class="text-gray-700">Berikan apresiasi kepada anggota tim yang menunjukkan performa baik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Individual Performance -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4">Performa Individual</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Anggota</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mood Rata-rata</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partisipasi</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perubahan Mood</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Highlight</th>
+                        </tr>
+                    </thead>
+                    <tbody id="individual-performance-table">
+                        <tr>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="font-medium">Pengguna</div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="mood-indicator bg-green-500 mr-2"></div>
+                                    <span>Senang</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 90%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">90%</span>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center text-green-600">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    </svg>
+                                    <span>15%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Kontributor Aktif</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="font-medium">Budi</div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="mood-indicator bg-green-500 mr-2"></div>
+                                    <span>Senang</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">85%</span>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center text-green-600">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                    </svg>
+                                    <span>10%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <span class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800">Team Leader</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="font-medium">Citra</div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="mood-indicator bg-yellow-500 mr-2"></div>
+                                    <span>Netral</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">75%</span>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center text-gray-600">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"></path>
+                                    </svg>
+                                    <span>0%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Desainer UI</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="font-medium">Deni</div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="mood-indicator bg-red-500 mr-2"></div>
+                                    <span>Marah</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 60%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">60%</span>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <div class="flex items-center text-red-600">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                    </svg>
+                                    <span>20%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 border-b border-gray-200">
+                                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Perlu Perhatian</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/weekly-report.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize WeeklyReport component
+            const container = document.querySelector('.weekly-report-container');
+            if (typeof WeeklyReportComponent !== 'undefined') {
+                WeeklyReportComponent.init(container);
+            }
+        });
+    </script>
+</body>
+</html>

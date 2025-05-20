@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Diskusi Grup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="index.html" class="nav-link">Beranda</a>
+                    <a href="mood-check.html" class="nav-link">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link active">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="index.html" class="block py-2 nav-link">Beranda</a>
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 flex-grow discussion-container">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Chat Area - Takes 2/3 of the space on larger screens -->
+            <div class="md:col-span-2">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold">Diskusi Grup</h2>
+                            <p class="text-sm text-indigo-200">Diskusikan ide dan perasaan dengan tim Anda</p>
+                        </div>
+                        <div>
+                            <button id="toggle-face-tracker" class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
+                                <span class="tracker-off flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                    </svg>
+                                    Tampilkan Wajah
+                                </span>
+                                <span class="tracker-on hidden flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    Sembunyikan
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- FaceTracker Container -->
+                    <div class="hidden" id="face-tracker-container">
+                        <div class="p-4 bg-indigo-50 border-b border-indigo-100">
+                            <div class="flex flex-col md:flex-row md:items-center gap-4">
+                                <div id="camera-container" class="relative rounded-lg overflow-hidden border border-gray-200 w-full md:w-1/3">
+                                    <video id="video" width="100%" height="auto" autoplay muted class="bg-gray-100"></video>
+                                    <canvas id="canvas" class="hidden absolute top-0 left-0 w-full h-full"></canvas>
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <h3 class="text-lg font-semibold text-indigo-800 mb-2">Face Tracker</h3>
+                                    <p class="text-sm text-indigo-700 mb-2">Sistem akan mendeteksi ekspresi wajah Anda secara real-time.</p>
+                                    <div id="emotion-result" class="p-2 bg-white rounded-md text-center font-medium text-indigo-800 shadow-sm">Menunggu deteksi...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Container -->
+                    <div class="chat-container">
+                        <div id="chat-messages" class="chat-messages">
+                            <!-- Chat messages will be populated here -->
+                        </div>
+                        
+                        <div class="chat-input">
+                            <form id="message-form" class="flex flex-col space-y-3">
+                                <div class="mb-4">
+                                    <label class="block text-gray-800 font-semibold mb-2">Pilih mood Anda:</label>
+                                    <div class="flex space-x-4">
+                                        <div class="mood-option">
+                                            <div class="mood-selector bg-green-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="happy"></div>
+                                            <span class="block text-center mt-1 text-sm font-medium">Senang</span>
+                                        </div>
+                                        <div class="mood-option">
+                                            <div class="mood-selector bg-yellow-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="neutral"></div>
+                                            <span class="block text-center mt-1 text-sm font-medium">Netral</span>
+                                        </div>
+                                        <div class="mood-option">
+                                            <div class="mood-selector bg-red-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="angry"></div>
+                                            <span class="block text-center mt-1 text-sm font-medium">Marah</span>
+                                        </div>
+                                        <div class="mood-option">
+                                            <div class="mood-selector bg-blue-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="sad"></div>
+                                            <span class="block text-center mt-1 text-sm font-medium">Sedih</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <textarea id="message-input" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                                    placeholder="Ketik pesan Anda di sini..." rows="2"></textarea>
+                                
+                                <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                                    Kirim Pesan
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar - Takes 1/3 of the space on larger screens -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 bg-indigo-600 text-white">
+                        <h2 class="text-xl font-bold">Peserta Aktif</h2>
+                    </div>
+                    
+                    <div class="p-4">
+                        <ul id="active-participants" class="space-y-2">
+                            <!-- Active participants will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
+                    <div class="p-4 bg-indigo-600 text-white">
+                        <h2 class="text-xl font-bold">Topik Diskusi</h2>
+                    </div>
+                    
+                    <div class="p-4">
+                        <ul class="space-y-2">
+                            <li class="p-2 bg-indigo-100 rounded-lg">Pengembangan Fitur Baru</li>
+                            <li class="p-2 bg-gray-100 rounded-lg">Bug Fixing</li>
+                            <li class="p-2 bg-gray-100 rounded-lg">Desain UI/UX</li>
+                        </ul>
+                        
+                        <button id="new-topic-btn" class="mt-4 w-full bg-indigo-100 text-indigo-700 py-2 px-4 rounded-lg hover:bg-indigo-200 transition-colors">
+                            + Topik Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/face-tracker.js"></script>
+    <script src="js/components/discussion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize Discussion component
+            const container = document.querySelector('.discussion-container');
+            if (typeof DiscussionComponent !== 'undefined') {
+                DiscussionComponent.init(container);
+            }
+            
+            // Setup toggle for FaceTracker
+            const toggleFaceTrackerBtn = document.getElementById('toggle-face-tracker');
+            const faceTrackerContainer = document.getElementById('face-tracker-container');
+            const trackerOffText = document.querySelector('.tracker-off');
+            const trackerOnText = document.querySelector('.tracker-on');
+            
+            toggleFaceTrackerBtn.addEventListener('click', () => {
+                if (faceTrackerContainer.classList.contains('hidden')) {
+                    // Show face tracker
+                    faceTrackerContainer.classList.remove('hidden');
+                    
+                    // Update button text
+                    trackerOffText.classList.add('hidden');
+                    trackerOnText.classList.remove('hidden');
+                    
+                    // Initialize FaceTracker if it's not already initialized
+                    if (typeof FaceTrackerComponent !== 'undefined') {
+                        FaceTrackerComponent.init(faceTrackerContainer);
+                    }
+                } else {
+                    // Hide face tracker
+                    faceTrackerContainer.classList.add('hidden');
+                    
+                    // Update button text
+                    trackerOffText.classList.remove('hidden');
+                    trackerOnText.classList.add('hidden');
+                    
+                    // Stop camera if it's running
+                    if (typeof FaceTrackerComponent !== 'undefined' && FaceTrackerComponent.isRunning) {
+                        FaceTrackerComponent.stopCamera();
+                    }
+                }
+            });
+            
+            // Auto-start face tracker when page loads
+            setTimeout(() => {
+                if (toggleFaceTrackerBtn && faceTrackerContainer) {
+                    toggleFaceTrackerBtn.click();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

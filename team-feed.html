@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Feed Tim</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="index.html" class="nav-link">Beranda</a>
+                    <a href="mood-check.html" class="nav-link">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link active">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="index.html" class="block py-2 nav-link">Beranda</a>
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow team-feed-container">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column - Create Post and Filters -->
+            <div class="lg:col-span-1">
+                <!-- Create Post Card -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+                    <div class="p-4 bg-indigo-600 text-white">
+                        <h2 class="text-xl font-bold">Bagikan Refleksi</h2>
+                    </div>
+                    
+                    <div class="p-4">
+                        <form id="post-form">
+                            <div class="mb-4">
+                                <label for="post-title" class="block text-gray-700 font-medium mb-2">Judul</label>
+                                <input type="text" id="post-title" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Judul refleksi Anda">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="post-content" class="block text-gray-700 font-medium mb-2">Konten</label>
+                                <textarea id="post-content" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Bagikan refleksi atau insight Anda setelah diskusi..." rows="4"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-medium mb-2">Mood Saat Ini</label>
+                                <div class="flex space-x-4">
+                                    <div class="mood-option">
+                                        <div class="mood-selector bg-green-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="happy"></div>
+                                        <span class="block text-center mt-1 text-sm font-medium">Senang</span>
+                                    </div>
+                                    <div class="mood-option">
+                                        <div class="mood-selector bg-yellow-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="neutral"></div>
+                                        <span class="block text-center mt-1 text-sm font-medium">Netral</span>
+                                    </div>
+                                    <div class="mood-option">
+                                        <div class="mood-selector bg-red-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="angry"></div>
+                                        <span class="block text-center mt-1 text-sm font-medium">Marah</span>
+                                    </div>
+                                    <div class="mood-option">
+                                        <div class="mood-selector bg-blue-500 cursor-pointer w-10 h-10 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform mx-auto" data-mood="sad"></div>
+                                        <span class="block text-center mt-1 text-sm font-medium">Sedih</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="post-tags" class="block text-gray-700 font-medium mb-2">Tag (pisahkan dengan koma)</label>
+                                <input type="text" id="post-tags" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="diskusi, proyek, ide, ...">
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                                Bagikan Refleksi
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Filters Card -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 bg-indigo-600 text-white">
+                        <h2 class="text-xl font-bold">Filter</h2>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="mb-4">
+                            <label for="filter-mood" class="block text-gray-700 font-medium mb-2">Filter berdasarkan Mood</label>
+                            <select id="filter-mood" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="all">Semua Mood</option>
+                                <option value="happy">Senang</option>
+                                <option value="neutral">Netral</option>
+                                <option value="angry">Marah</option>
+                                <option value="sad">Sedih</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="filter-author" class="block text-gray-700 font-medium mb-2">Filter berdasarkan Anggota</label>
+                            <select id="filter-author" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="all">Semua Anggota</option>
+                                <option value="user1">Pengguna</option>
+                                <option value="user2">Budi</option>
+                                <option value="user3">Citra</option>
+                                <option value="user4">Deni</option>
+                                <option value="user5">Eka</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="filter-tag" class="block text-gray-700 font-medium mb-2">Filter berdasarkan Tag</label>
+                            <select id="filter-tag" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="all">Semua Tag</option>
+                                <option value="diskusi">Diskusi</option>
+                                <option value="proyek">Proyek</option>
+                                <option value="ide">Ide</option>
+                                <option value="bug">Bug</option>
+                                <option value="fitur">Fitur</option>
+                            </select>
+                        </div>
+                        
+                        <button id="apply-filter-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Terapkan Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Feed Posts -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+                    <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+                        <h2 class="text-xl font-bold">Feed Tim</h2>
+                        <div class="flex items-center">
+                            <span class="text-sm mr-2">Urutkan:</span>
+                            <select id="sort-posts" class="bg-white text-indigo-800 px-2 py-1 rounded-md text-sm">
+                                <option value="newest">Terbaru</option>
+                                <option value="oldest">Terlama</option>
+                                <option value="popular">Terpopuler</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="feed-posts" class="divide-y divide-gray-200">
+                        <!-- Posts will be populated here -->
+                        
+                        <!-- Sample Post 1 -->
+                        <div class="p-4 post-item" data-mood="happy" data-author="user2" data-tags="diskusi,proyek,ide">
+                            <div class="flex items-start mb-2">
+                                <div class="mood-indicator bg-green-500 mt-1 mr-3"></div>
+                                <div class="flex-grow">
+                                    <h3 class="font-bold text-lg">Ide untuk Pengembangan Fitur Baru</h3>
+                                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                                        <span class="font-medium mr-2">Budi</span>
+                                        <span>20 Mei 2025, 10:30</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">
+                                        Setelah diskusi hari ini, saya mendapatkan beberapa ide untuk pengembangan fitur baru yang dapat meningkatkan produktivitas tim. Saya pikir kita perlu menambahkan fitur notifikasi real-time untuk perubahan mood anggota tim.
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">diskusi</span>
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">proyek</span>
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">ide</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <button class="like-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                                                </svg>
+                                                <span>12</span>
+                                            </button>
+                                            <button class="comment-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                </svg>
+                                                <span>5</span>
+                                            </button>
+                                        </div>
+                                        <button class="share-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sample Post 2 -->
+                        <div class="p-4 post-item" data-mood="neutral" data-author="user3" data-tags="diskusi,ui,desain">
+                            <div class="flex items-start mb-2">
+                                <div class="mood-indicator bg-yellow-500 mt-1 mr-3"></div>
+                                <div class="flex-grow">
+                                    <h3 class="font-bold text-lg">Refleksi tentang Desain UI/UX</h3>
+                                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                                        <span class="font-medium mr-2">Citra</span>
+                                        <span>19 Mei 2025, 14:15</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">
+                                        Saya telah memikirkan tentang desain UI/UX aplikasi kita. Meskipun sudah cukup baik, saya pikir masih ada beberapa area yang bisa ditingkatkan untuk pengalaman pengguna yang lebih baik. Khususnya pada bagian dashboard yang terasa terlalu padat.
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">diskusi</span>
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">ui</span>
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">desain</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <button class="like-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                                                </svg>
+                                                <span>8</span>
+                                            </button>
+                                            <button class="comment-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                </svg>
+                                                <span>3</span>
+                                            </button>
+                                        </div>
+                                        <button class="share-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sample Post 3 -->
+                        <div class="p-4 post-item" data-mood="angry" data-author="user4" data-tags="bug,proyek">
+                            <div class="flex items-start mb-2">
+                                <div class="mood-indicator bg-red-500 mt-1 mr-3"></div>
+                                <div class="flex-grow">
+                                    <h3 class="font-bold text-lg">Frustrasi dengan Bug yang Sulit Diperbaiki</h3>
+                                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                                        <span class="font-medium mr-2">Deni</span>
+                                        <span>18 Mei 2025, 16:45</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-3">
+                                        Saya telah menghabiskan beberapa hari terakhir mencoba memperbaiki bug pada fitur notifikasi, tetapi masih belum berhasil. Ini sangat membuat frustrasi karena deadlinenya semakin dekat. Saya mungkin membutuhkan bantuan dari anggota tim lain untuk menyelesaikan masalah ini.
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">bug</span>
+                                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">proyek</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <button class="like-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+                                                </svg>
+                                                <span>5</span>
+                                            </button>
+                                            <button class="comment-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                </svg>
+                                                <span>7</span>
+                                            </button>
+                                        </div>
+                                        <button class="share-btn flex items-center text-gray-500 hover:text-indigo-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="p-4 flex justify-center">
+                        <div class="flex space-x-1">
+                            <button class="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-indigo-100">Prev</button>
+                            <button class="px-3 py-1 rounded-md bg-indigo-600 text-white">1</button>
+                            <button class="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-indigo-100">2</button>
+                            <button class="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-indigo-100">3</button>
+                            <button class="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-indigo-100">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/team-feed.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize TeamFeed component
+            const container = document.querySelector('.team-feed-container');
+            if (typeof TeamFeedComponent !== 'undefined') {
+                TeamFeedComponent.init(container);
+            }
+        });
+    </script>
+</body>
+</html>

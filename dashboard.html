@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Dashboard Emosi</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="index.html" class="nav-link">Beranda</a>
+                    <a href="mood-check.html" class="nav-link">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="index.html" class="block py-2 nav-link">Beranda</a>
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-800">Dashboard Emosi</h1>
+                <p class="text-gray-600">Analisis mood tim secara real-time</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <div class="flex space-x-2">
+                    <select id="time-range" class="bg-white border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="day">Hari Ini</option>
+                        <option value="week" selected>Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                    </select>
+                    <button id="refresh-btn" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mood Legend -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <h2 class="text-lg font-bold text-indigo-800 mb-3">Legenda Mood</h2>
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-green-500 rounded-md mr-2"></div>
+                    <span>Senang</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-yellow-500 rounded-md mr-2"></div>
+                    <span>Netral</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-red-500 rounded-md mr-2"></div>
+                    <span>Marah</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-blue-500 rounded-md mr-2"></div>
+                    <span>Sedih</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- Team Mood Distribution -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h2 class="text-lg font-bold text-indigo-800 mb-3">Distribusi Mood Tim</h2>
+                <div class="chart-container" style="position: relative; height: 300px;">
+                    <canvas id="team-mood-chart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Mood Trend -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h2 class="text-lg font-bold text-indigo-800 mb-3">Tren Mood Harian</h2>
+                <div class="chart-container" style="position: relative; height: 300px;">
+                    <canvas id="mood-trend-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team Members Mood -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <h2 class="text-lg font-bold text-indigo-800 mb-3">Mood Anggota Tim</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Anggota</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mood Saat Ini</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mood Dominan</th>
+                            <th class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perubahan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="team-members-table">
+                        <!-- Table rows will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Mood Insights -->
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <h2 class="text-lg font-bold text-indigo-800 mb-3">Insight Mood Tim</h2>
+            <div id="mood-insights" class="space-y-4">
+                <!-- Insights will be populated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize Dashboard component
+            const container = document.querySelector('.dashboard-container');
+            if (typeof DashboardComponent !== 'undefined') {
+                DashboardComponent.init(container);
+            }
+        });
+    </script>
+</body>
+</html>

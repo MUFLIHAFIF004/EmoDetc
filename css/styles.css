@@ -1,0 +1,246 @@
+/* Main Styles for EmoDetc Application */
+
+/* Custom Classes for Navigation */
+.nav-link {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.nav-link:hover {
+    background-color: #4338ca; /* indigo-700 */
+}
+
+.nav-link.active {
+    background-color: #4338ca; /* indigo-700 */
+    font-weight: 500;
+}
+
+/* Mood Colors and Selectors */
+.mood-color {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e5e7eb;
+    display: inline-block;
+}
+
+.mood-color:hover {
+    transform: scale(1.1);
+}
+
+.mood-color-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 3px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mood-color-large:hover {
+    transform: scale(1.05);
+}
+
+.mood-selector {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mood-selector:hover {
+    transform: scale(1.1);
+}
+
+.mood-selector.selected {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
+}
+
+/* Discussion Room */
+.chat-container {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+}
+
+.chat-messages {
+    flex: 1 1 0%;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #f9fafb;
+}
+
+.chat-input {
+    border-top-width: 1px;
+    border-color: #e5e7eb;
+    padding: 1.25rem;
+    background-color: white;
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    max-width: 80%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.message.sent {
+    background-color: #6366f1;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+}
+
+.message.received {
+    background-color: white;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    border-bottom-left-radius: 0;
+}
+
+.mood-indicator {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    display: inline-block;
+    margin-right: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Face Tracker */
+#face-tracker-container {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#camera-container {
+    min-height: 180px;
+    background-color: #f9fafb;
+}
+
+/* Dashboard */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 1.5rem;
+}
+
+.mood-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+/* Weekly Report */
+.week-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.week-selector button {
+    background-color: #e5e7eb;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.week-selector button:hover {
+    background-color: #d1d5db;
+}
+
+/* Team Feed */
+.feed-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.feed-item:last-child {
+    border-bottom: none;
+}
+
+.feed-timestamp {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+/* Chat History */
+.history-filter {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.history-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.history-item:hover {
+    background-color: #f9fafb;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mood-color-large {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}

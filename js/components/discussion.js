@@ -9,6 +9,14 @@ const DiscussionComponent = {
         this.render();
         this.setupEventListeners();
         this.loadChatHistory();
+        
+        // Initialize FaceTracker component
+        if (typeof FaceTrackerComponent !== 'undefined') {
+            const faceTrackerContainer = document.getElementById('face-tracker-container');
+            if (faceTrackerContainer) {
+                FaceTrackerComponent.init(faceTrackerContainer);
+            }
+        }
     },
     
     render: function() {
@@ -32,10 +40,10 @@ const DiscussionComponent = {
                                     <div class="flex items-center space-x-2 mb-2">
                                         <span class="text-gray-700">Mood saat ini:</span>
                                         <div class="flex space-x-2">
-                                            <div class="mood-selector cursor-pointer p-1 rounded-full" data-mood="happy">😊</div>
-                                            <div class="mood-selector cursor-pointer p-1 rounded-full" data-mood="neutral">😐</div>
-                                            <div class="mood-selector cursor-pointer p-1 rounded-full" data-mood="angry">😠</div>
-                                            <div class="mood-selector cursor-pointer p-1 rounded-full" data-mood="sad">😢</div>
+                                            <div class="mood-selector bg-green-500 cursor-pointer w-6 h-6 rounded-full" data-mood="happy"></div>
+                                            <div class="mood-selector bg-yellow-500 cursor-pointer w-6 h-6 rounded-full" data-mood="neutral"></div>
+                                            <div class="mood-selector bg-red-500 cursor-pointer w-6 h-6 rounded-full" data-mood="angry"></div>
+                                            <div class="mood-selector bg-blue-500 cursor-pointer w-6 h-6 rounded-full" data-mood="sad"></div>
                                         </div>
                                     </div>
                                     
@@ -47,6 +55,18 @@ const DiscussionComponent = {
                                     </button>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FaceTracker Section -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
+                        <div class="p-4 bg-indigo-600 text-white">
+                            <h2 class="text-xl font-bold">FaceTracker</h2>
+                            <p class="text-sm text-indigo-200">Deteksi ekspresi wajah secara real-time</p>
+                        </div>
+                        
+                        <div class="p-4" id="face-tracker-container">
+                            <!-- FaceTracker akan dirender di sini -->
                         </div>
                     </div>
                 </div>

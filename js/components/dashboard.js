@@ -16,6 +16,53 @@ const DashboardComponent = {
                 <h2 class="text-2xl font-bold mb-2 text-indigo-700">Dashboard Emosi</h2>
                 <p class="text-gray-600 mb-6">Visualisasi tren emosi Anda dan tim secara real-time</p>
                 
+                <!-- Menu Navigasi Cepat -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                    <a href="#" class="nav-link block bg-indigo-600 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors" data-page="mood-check">
+                        <div class="text-2xl mb-1">🎨</div>
+                        <div>Cek Mood</div>
+                    </a>
+                    <a href="#" class="nav-link block bg-indigo-600 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors" data-page="discussion">
+                        <div class="text-2xl mb-1">💬</div>
+                        <div>Diskusi</div>
+                    </a>
+                    <a href="#" class="nav-link block bg-indigo-700 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-800 transition-colors" data-page="dashboard">
+                        <div class="text-2xl mb-1">📊</div>
+                        <div>Dashboard</div>
+                    </a>
+                    <a href="#" class="nav-link block bg-indigo-600 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors" data-page="weekly-report">
+                        <div class="text-2xl mb-1">📝</div>
+                        <div>Weekly Report</div>
+                    </a>
+                    <a href="#" class="nav-link block bg-indigo-600 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors" data-page="team-feed">
+                        <div class="text-2xl mb-1">📣</div>
+                        <div>Feed Tim</div>
+                    </a>
+                </div>
+                
+                <!-- Keterangan Warna Mood -->
+                <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Keterangan Warna Mood</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-lg bg-green-500 mr-2"></div>
+                            <span>Hijau = Senang</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-lg bg-yellow-500 mr-2"></div>
+                            <span>Kuning = Netral</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-lg bg-red-500 mr-2"></div>
+                            <span>Merah = Marah</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-lg bg-blue-500 mr-2"></div>
+                            <span>Biru = Sedih</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Personal Mood Trends -->
                     <div class="chart-container">
@@ -36,7 +83,7 @@ const DashboardComponent = {
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="text-lg font-semibold mb-2">Mood Dominan</h3>
                     <div class="flex items-center">
-                        <div id="dominant-mood-emoji" class="text-4xl mr-3">😊</div>
+                        <div class="w-10 h-10 rounded-lg bg-green-500 mr-3"></div>
                         <div>
                             <p id="dominant-mood-text" class="font-bold text-xl">Senang</p>
                             <p class="text-gray-600">Minggu ini</p>
@@ -47,7 +94,7 @@ const DashboardComponent = {
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="text-lg font-semibold mb-2">Stabilitas Mood</h3>
                     <div class="flex items-center">
-                        <div id="mood-stability-icon" class="text-4xl mr-3">📊</div>
+                        <div class="text-4xl mr-3">📊</div>
                         <div>
                             <p id="mood-stability-text" class="font-bold text-xl">Stabil</p>
                             <p class="text-gray-600">Perubahan minimal</p>
@@ -58,7 +105,7 @@ const DashboardComponent = {
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <h3 class="text-lg font-semibold mb-2">Mood Tim</h3>
                     <div class="flex items-center">
-                        <div id="team-mood-emoji" class="text-4xl mr-3">🙂</div>
+                        <div class="w-10 h-10 rounded-lg bg-green-500 mr-3"></div>
                         <div>
                             <p id="team-mood-text" class="font-bold text-xl">Positif</p>
                             <p class="text-gray-600">Rata-rata tim</p>

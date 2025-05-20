@@ -19,11 +19,23 @@
 }
 
 .mood-color {
-    @apply w-16 h-16 rounded-lg cursor-pointer transition-transform hover:scale-110 shadow-md;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e5e7eb;
+    display: inline-block;
+}
+
+.mood-color:hover {
+    transform: scale(1.1);
 }
 
 .mood-color.selected {
-    @apply ring-4 ring-indigo-500;
+    box-shadow: 0 0 0 4px #6366F1;
+    border-color: #6366F1;
 }
 
 /* Face Tracker */

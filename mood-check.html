@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Cek Mood</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="mood-check.html" class="nav-link active">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white p-6 rounded-lg shadow-md mx-auto max-w-2xl">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-700">Cek Mood Harian</h2>
+            
+            <div class="mb-6">
+                <div class="flex justify-around mb-4">
+                    <div class="mood-color bg-green-500" data-mood="happy" title="Senang"></div>
+                    <div class="mood-color bg-yellow-500" data-mood="neutral" title="Netral"></div>
+                    <div class="mood-color bg-red-500" data-mood="angry" title="Marah"></div>
+                    <div class="mood-color bg-blue-500" data-mood="sad" title="Sedih"></div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2" for="mood-note">Catatan (opsional):</label>
+                <textarea id="mood-note" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Ceritakan lebih detail tentang mood Anda hari ini..."></textarea>
+            </div>
+            
+            <button id="submit-mood" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                Kirim Data Mood
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/mood-check.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize Mood Check component
+            const container = document.querySelector('.container .bg-white');
+            MoodCheckComponent.init(container);
+        });
+    </script>
+</body>
+</html>

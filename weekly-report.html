@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoDetc - Weekly Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold">EmoDetc</span>
+                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="mood-check.html" class="nav-link">Cek Mood</a>
+                    <a href="discussion.html" class="nav-link">Diskusi</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="weekly-report.html" class="nav-link active">Weekly Report</a>
+                    <a href="team-feed.html" class="nav-link">Feed Tim</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden py-2">
+                <a href="mood-check.html" class="block py-2 nav-link">Cek Mood</a>
+                <a href="discussion.html" class="block py-2 nav-link">Diskusi</a>
+                <a href="dashboard.html" class="block py-2 nav-link">Dashboard</a>
+                <a href="weekly-report.html" class="block py-2 nav-link">Weekly Report</a>
+                <a href="team-feed.html" class="block py-2 nav-link">Feed Tim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-indigo-700">Weekly Mood Report</h2>
+                
+                <div class="flex space-x-2">
+                    <select id="week-selector" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="current">Minggu Ini (13-19 Mei 2025)</option>
+                        <option value="prev1">Minggu Lalu (6-12 Mei 2025)</option>
+                        <option value="prev2">2 Minggu Lalu (29 Apr - 5 Mei 2025)</option>
+                    </select>
+                    
+                    <button id="export-report" class="bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Weekly Summary -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">Ringkasan Mingguan</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="report-card">
+                        <h4 class="font-semibold text-lg">Mood Dominan</h4>
+                        <div class="flex items-center mt-2">
+                            <div class="w-6 h-6 bg-green-500 rounded-full mr-2"></div>
+                            <span class="text-xl">Senang (42%)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4 class="font-semibold text-lg">Perubahan</h4>
+                        <div class="flex items-center mt-2">
+                            <span class="text-green-500 text-xl">↑ 8%</span>
+                            <span class="ml-2">dari minggu lalu</span>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4 class="font-semibold text-lg">Mood Terendah</h4>
+                        <div class="flex items-center mt-2">
+                            <div class="w-6 h-6 bg-red-500 rounded-full mr-2"></div>
+                            <span class="text-xl">Marah (15%)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4 class="font-semibold text-lg">Stabilitas</h4>
+                        <div class="flex items-center mt-2">
+                            <span class="text-xl">Medium</span>
+                            <span class="ml-2 text-yellow-500">⚠</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weekly Chart -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">Grafik Mingguan</h3>
+                
+                <div class="relative" style="height: 300px;">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+                
+                <div class="flex justify-center mt-4">
+                    <div class="flex items-center mx-2">
+                        <div class="w-4 h-4 bg-green-500 rounded-full mr-1"></div>
+                        <span class="text-sm">Senang</span>
+                    </div>
+                    <div class="flex items-center mx-2">
+                        <div class="w-4 h-4 bg-yellow-500 rounded-full mr-1"></div>
+                        <span class="text-sm">Netral</span>
+                    </div>
+                    <div class="flex items-center mx-2">
+                        <div class="w-4 h-4 bg-red-500 rounded-full mr-1"></div>
+                        <span class="text-sm">Marah</span>
+                    </div>
+                    <div class="flex items-center mx-2">
+                        <div class="w-4 h-4 bg-blue-500 rounded-full mr-1"></div>
+                        <span class="text-sm">Sedih</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mood Notes -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Catatan Mood</h3>
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex justify-between">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                                <span class="font-semibold">Senang</span>
+                            </div>
+                            <span class="text-sm text-gray-500">Senin, 13 Mei 2025</span>
+                        </div>
+                        <p class="mt-2">Berhasil menyelesaikan fitur baru sesuai deadline.</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex justify-between">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
+                                <span class="font-semibold">Netral</span>
+                            </div>
+                            <span class="text-sm text-gray-500">Rabu, 15 Mei 2025</span>
+                        </div>
+                        <p class="mt-2">Rapat tim berjalan cukup baik, beberapa keputusan masih perlu dipertimbangkan.</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex justify-between">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                                <span class="font-semibold">Marah</span>
+                            </div>
+                            <span class="text-sm text-gray-500">Kamis, 16 Mei 2025</span>
+                        </div>
+                        <p class="mt-2">Terjadi konflik dengan tim backend mengenai API yang tidak sesuai dokumentasi.</p>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex justify-between">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                                <span class="font-semibold">Senang</span>
+                            </div>
+                            <span class="text-sm text-gray-500">Jumat, 17 Mei 2025</span>
+                        </div>
+                        <p class="mt-2">Berhasil menyelesaikan masalah dengan tim backend dan melanjutkan pengembangan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/components/weekly-report.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initialize Weekly Report component
+            const container = document.querySelector('.container');
+            if (typeof WeeklyReportComponent !== 'undefined') {
+                WeeklyReportComponent.init(container);
+            } else {
+                // Fallback if component is not loaded
+                initializeWeeklyChart();
+            }
+            
+            // Week selector event
+            const weekSelector = document.getElementById('week-selector');
+            if (weekSelector) {
+                weekSelector.addEventListener('change', () => {
+                    // In a real app, this would load data for the selected week
+                    alert('Memuat data untuk: ' + weekSelector.options[weekSelector.selectedIndex].text);
+                });
+            }
+            
+            // Export button event
+            const exportButton = document.getElementById('export-report');
+            if (exportButton) {
+                exportButton.addEventListener('click', () => {
+                    alert('Mengekspor laporan sebagai PDF...');
+                });
+            }
+        });
+        
+        function initializeWeeklyChart() {
+            const ctx = document.getElementById('weekly-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                    datasets: [
+                        {
+                            label: 'Senang',
+                            data: [4, 5, 3, 2, 6, 5, 4],
+                            backgroundColor: '#10B981'
+                        },
+                        {
+                            label: 'Netral',
+                            data: [2, 3, 4, 3, 2, 3, 3],
+                            backgroundColor: '#F59E0B'
+                        },
+                        {
+                            label: 'Marah',
+                            data: [1, 0, 1, 3, 0, 0, 0],
+                            backgroundColor: '#EF4444'
+                        },
+                        {
+                            label: 'Sedih',
+                            data: [0, 1, 1, 1, 0, 1, 1],
+                            backgroundColor: '#3B82F6'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

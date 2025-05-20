@@ -6,63 +6,90 @@
     <title>EmoDetc - Emotional Detection Team's</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-indigo-600 text-white shadow-lg">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold">EmoDetc</span>
-                    <span class="ml-2 text-sm text-indigo-200">Emotional Detection Team's</span>
+    <!-- Hero Section -->
+    <div class="bg-indigo-600 text-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">EmoDetc</h1>
+                <p class="text-xl md:text-2xl text-indigo-200 mb-8">Emotional Detection Team's</p>
+                <p class="text-lg mb-10 max-w-2xl">Platform untuk melacak, menganalisis, dan berbagi mood dalam tim untuk meningkatkan kolaborasi dan kesejahteraan.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="w-24 h-24 bg-green-500 rounded-lg shadow-lg flex items-center justify-center" title="Senang">
+                        <span class="text-4xl">😊</span>
+                    </div>
+                    <div class="w-24 h-24 bg-yellow-500 rounded-lg shadow-lg flex items-center justify-center" title="Netral">
+                        <span class="text-4xl">😐</span>
+                    </div>
+                    <div class="w-24 h-24 bg-red-500 rounded-lg shadow-lg flex items-center justify-center" title="Marah">
+                        <span class="text-4xl">😠</span>
+                    </div>
+                    <div class="w-24 h-24 bg-blue-500 rounded-lg shadow-lg flex items-center justify-center" title="Sedih">
+                        <span class="text-4xl">😢</span>
+                    </div>
                 </div>
-                <div class="hidden md:flex space-x-4">
-                    <a href="#" class="nav-link active" data-page="mood-check">Cek Mood</a>
-                    <a href="#" class="nav-link" data-page="discussion">Diskusi</a>
-                    <a href="#" class="nav-link" data-page="dashboard">Dashboard</a>
-                    <a href="#" class="nav-link" data-page="weekly-report">Weekly Report</a>
-                    <a href="#" class="nav-link" data-page="team-feed">Feed Tim</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-white focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div id="mobile-menu" class="md:hidden hidden py-2">
-                <a href="#" class="block py-2 nav-link" data-page="mood-check">Cek Mood</a>
-                <a href="#" class="block py-2 nav-link" data-page="discussion">Diskusi</a>
-                <a href="#" class="block py-2 nav-link" data-page="dashboard">Dashboard</a>
-                <a href="#" class="block py-2 nav-link" data-page="weekly-report">Weekly Report</a>
-                <a href="#" class="block py-2 nav-link" data-page="team-feed">Feed Tim</a>
             </div>
         </div>
-    </nav>
-
-    <!-- Main Content Container -->
-    <div class="container mx-auto px-4 py-8">
-        <!-- Pages will be loaded here -->
-        <div id="page-content"></div>
     </div>
-
+    
+    <!-- Features Section -->
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold text-center mb-12">Fitur Aplikasi</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Cek Mood</h3>
+                <p class="mb-4">Lacak mood Anda setiap hari dengan memilih warna yang mewakili perasaan Anda.</p>
+                <a href="mood-check.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Diskusi Grup</h3>
+                <p class="mb-4">Diskusikan ide dan perasaan dengan tim Anda, lengkap dengan indikator mood.</p>
+                <a href="discussion.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Dashboard Emosi</h3>
+                <p class="mb-4">Visualisasi data mood tim Anda untuk memahami tren dan pola emosi.</p>
+                <a href="dashboard.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Weekly Report</h3>
+                <p class="mb-4">Laporan mingguan tentang mood tim untuk evaluasi dan peningkatan.</p>
+                <a href="weekly-report.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Feed Tim</h3>
+                <p class="mb-4">Berikan dan terima feedback dari anggota tim untuk meningkatkan kolaborasi.</p>
+                <a href="team-feed.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-4 text-indigo-700">Chat History</h3>
+                <p class="mb-4">Lihat riwayat chat dengan filter berdasarkan mood dan pengguna.</p>
+                <a href="chat-history.html" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Mulai</a>
+            </div>
+        </div>
+    </div>
+    
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 mt-auto">
+    <footer class="bg-gray-800 text-white py-6">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+            <p class="mb-2">&copy; 2025 EmoDetc - Emotional Detection Team's</p>
+            <div class="flex justify-center space-x-4">
+                <a href="mood-check.html" class="hover:text-indigo-300 transition-colors">Cek Mood</a>
+                <a href="discussion.html" class="hover:text-indigo-300 transition-colors">Diskusi</a>
+                <a href="dashboard.html" class="hover:text-indigo-300 transition-colors">Dashboard</a>
+                <a href="weekly-report.html" class="hover:text-indigo-300 transition-colors">Weekly Report</a>
+                <a href="team-feed.html" class="hover:text-indigo-300 transition-colors">Feed Tim</a>
+                <a href="chat-history.html" class="hover:text-indigo-300 transition-colors">Chat History</a>
+            </div>
         </div>
     </footer>
-
-    <!-- Scripts -->
-    <script src="js/app.js"></script>
-    <script src="js/components/mood-check.js"></script>
-    <script src="js/components/face-tracker.js"></script>
-    <script src="js/components/dashboard.js"></script>
-    <script src="js/components/discussion.js"></script>
-    <script src="js/components/chat-history.js"></script>
-    <script src="js/components/weekly-report.js"></script>
-    <script src="js/components/team-feed.js"></script>
 </body>
 </html>

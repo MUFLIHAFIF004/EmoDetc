@@ -207,9 +207,15 @@ const DiscussionComponent = {
     highlightSelectedMood: function() {
         // Remove highlight from all selectors
         const moodSelectors = document.querySelectorAll('.mood-selector');
+        const moodOptions = document.querySelectorAll('.mood-option');
+        
         moodSelectors.forEach(selector => {
             selector.classList.remove('ring-2', 'ring-indigo-500');
             selector.classList.remove('scale-110');
+        });
+        
+        moodOptions.forEach(option => {
+            option.classList.remove('font-bold');
         });
         
         // Add highlight to selected selector
@@ -217,6 +223,12 @@ const DiscussionComponent = {
         if (selectedSelector) {
             selectedSelector.classList.add('ring-2', 'ring-indigo-500');
             selectedSelector.classList.add('scale-110');
+            
+            // Also highlight the parent mood option
+            const parentOption = selectedSelector.closest('.mood-option');
+            if (parentOption) {
+                parentOption.classList.add('font-bold');
+            }
         }
     },
     
@@ -241,14 +253,7 @@ const DiscussionComponent = {
             { id: 'user5', name: 'Eka', mood: 'sad', isOnline: false }
         ];
         
-        // Mapping mood ke emoji dan warna
-        const moodEmojis = {
-            'happy': '😊',
-            'neutral': '😐',
-            'angry': '😠',
-            'sad': '😢'
-        };
-        
+        // Mapping mood ke warna
         const moodColors = {
             'happy': 'bg-green-500',
             'neutral': 'bg-yellow-500',
@@ -265,12 +270,14 @@ const DiscussionComponent = {
             
             messagesHTML += `
                 <div class="message ${messageClass}">
-                    <div class="flex items-center mb-1">
-                        <span class="mood-indicator ${moodColors[message.mood]}" title="${message.mood}"></span>
-                        <span class="font-semibold">${isCurrentUser ? 'Anda' : message.senderName}</span>
-                        <span class="text-xs text-gray-500 ml-2">${messageTime}</span>
+                    <div class="flex items-center mb-2">
+                        <div class="flex items-center">
+                            <span class="mood-indicator ${moodColors[message.mood]}"></span>
+                            <span class="font-semibold text-${isCurrentUser ? 'white' : 'gray-800'}">${isCurrentUser ? 'Anda' : message.senderName}</span>
+                        </div>
+                        <span class="text-xs ${isCurrentUser ? 'text-indigo-100' : 'text-gray-500'} ml-2">${messageTime}</span>
                     </div>
-                    <p>${message.content}</p>
+                    <p class="${isCurrentUser ? 'text-white' : 'text-gray-800'} text-base">${message.content}</p>
                 </div>
             `;
         });
@@ -284,12 +291,12 @@ const DiscussionComponent = {
         let participantsHTML = '';
         participants.forEach(participant => {
             participantsHTML += `
-                <li class="flex items-center justify-between">
+                <li class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
                     <div class="flex items-center">
-                        <span class="mood-indicator ${moodColors[participant.mood]}" title="${participant.mood}"></span>
-                        <span>${participant.name}</span>
+                        <span class="mood-indicator ${moodColors[participant.mood]} mr-2"></span>
+                        <span class="font-medium">${participant.name}</span>
                     </div>
-                    <span class="text-xs ${participant.isOnline ? 'text-green-500' : 'text-gray-400'}">
+                    <span class="text-sm px-2 py-1 rounded-full ${participant.isOnline ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}">
                         ${participant.isOnline ? 'Online' : 'Offline'}
                     </span>
                 </li>

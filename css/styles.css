@@ -2,20 +2,44 @@
 
 /* Custom Classes for Navigation */
 .nav-link {
-    @apply px-3 py-2 rounded hover:bg-indigo-700 transition-colors;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.nav-link:hover {
+    background-color: #4338ca; /* indigo-700 */
 }
 
 .nav-link.active {
-    @apply bg-indigo-700 font-medium;
+    background-color: #4338ca; /* indigo-700 */
+    font-weight: 500;
 }
 
 /* Mood Check Page */
 .mood-emoji {
-    @apply text-5xl cursor-pointer transition-transform hover:scale-110;
+    font-size: 3rem; /* text-5xl */
+    cursor: pointer;
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.mood-emoji:hover {
+    transform: scale(1.1); /* hover:scale-110 */
 }
 
 .mood-emoji.selected {
-    @apply ring-4 ring-indigo-500 rounded-full;
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-color: rgba(99, 102, 241, 0.5); /* ring-indigo-500 */
+    border-radius: 9999px; /* rounded-full */
 }
 
 .mood-color {
@@ -38,74 +62,145 @@
     border-color: #6366F1;
 }
 
+/* Kotak warna yang lebih besar untuk halaman Cek Mood */
+.mood-color-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    padding: 10px;
+}
+
+.mood-color-large:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Face Tracker */
 .video-container {
-    @apply relative border-2 border-gray-300 rounded-lg overflow-hidden;
+    position: relative;
+    border-width: 2px;
+    border-color: #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .snapshot-container {
-    @apply mt-4 border-2 border-gray-300 rounded-lg overflow-hidden;
+    margin-top: 1rem;
+    border-width: 2px;
+    border-color: #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 /* Dashboard */
 .chart-container {
-    @apply bg-white p-4 rounded-lg shadow-md;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Discussion */
 .chat-container {
-    @apply bg-white rounded-lg shadow-md h-96 flex flex-col;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: 400px; /* Fixed height instead of h-96 */
+    display: flex;
+    flex-direction: column;
 }
 
 .chat-messages {
-    @apply flex-1 overflow-y-auto p-4;
+    flex: 1 1 0%;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #f9fafb; /* gray-50 - light background for better contrast */
 }
 
 .chat-input {
-    @apply border-t border-gray-200 p-4;
+    border-top-width: 1px;
+    border-color: #e5e7eb; /* gray-200 */
+    padding: 1.25rem; /* Slightly more padding */
+    background-color: white;
 }
 
 .message {
-    @apply mb-4 p-3 rounded-lg max-w-xs;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    max-width: 80%; /* Relative width instead of fixed */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .message.sent {
-    @apply bg-indigo-500 text-white ml-auto;
+    background-color: #6366f1; /* indigo-500 */
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0;
 }
 
 .message.received {
-    @apply bg-gray-200 text-gray-800;
+    background-color: white;
+    color: #1f2937; /* gray-800 */
+    border: 1px solid #e5e7eb; /* gray-200 */
+    border-bottom-left-radius: 0;
 }
 
 .mood-indicator {
-    @apply w-4 h-4 rounded-full inline-block mr-2;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    display: inline-block;
+    margin-right: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mood options in discussion */
+.mood-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
 }
 
 /* Weekly Report */
 .report-card {
-    @apply bg-white p-4 rounded-lg shadow-md mb-4;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1rem;
 }
 
 /* Team Feed */
 .feed-item {
-    @apply bg-white p-4 rounded-lg shadow-md mb-4 border-l-4;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1rem;
+    border-left-width: 4px;
 }
 
 .feed-item.positive {
-    @apply border-green-500;
+    border-color: #10b981; /* green-500 */
 }
 
 .feed-item.neutral {
-    @apply border-yellow-500;
+    border-color: #f59e0b; /* yellow-500 */
 }
 
 .feed-item.negative {
-    @apply border-red-500;
+    border-color: #ef4444; /* red-500 */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .chart-container {
-        @apply mb-4;
+        margin-bottom: 1rem;
     }
 }

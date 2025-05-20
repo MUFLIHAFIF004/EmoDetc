@@ -38,12 +38,12 @@ const DiscussionComponent = {
                             <div class="chat-input">
                                 <form id="message-form" class="flex flex-col space-y-3">
                                     <div class="flex items-center space-x-2 mb-2">
-                                        <span class="text-gray-700">Mood saat ini:</span>
-                                        <div class="flex space-x-2">
-                                            <div class="mood-selector bg-green-500 cursor-pointer w-6 h-6 rounded-full" data-mood="happy"></div>
-                                            <div class="mood-selector bg-yellow-500 cursor-pointer w-6 h-6 rounded-full" data-mood="neutral"></div>
-                                            <div class="mood-selector bg-red-500 cursor-pointer w-6 h-6 rounded-full" data-mood="angry"></div>
-                                            <div class="mood-selector bg-blue-500 cursor-pointer w-6 h-6 rounded-full" data-mood="sad"></div>
+                                        <span class="text-gray-700 font-medium">Mood saat ini:</span>
+                                        <div class="flex space-x-3">
+                                            <div class="mood-selector bg-green-500 cursor-pointer w-8 h-8 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform" data-mood="happy" title="Senang"></div>
+                                            <div class="mood-selector bg-yellow-500 cursor-pointer w-8 h-8 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform" data-mood="neutral" title="Netral"></div>
+                                            <div class="mood-selector bg-red-500 cursor-pointer w-8 h-8 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform" data-mood="angry" title="Marah"></div>
+                                            <div class="mood-selector bg-blue-500 cursor-pointer w-8 h-8 rounded-lg border-2 border-gray-200 hover:scale-110 transition-transform" data-mood="sad" title="Sedih"></div>
                                         </div>
                                     </div>
                                     
@@ -60,12 +60,19 @@ const DiscussionComponent = {
                     
                     <!-- FaceTracker Section -->
                     <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
-                        <div class="p-4 bg-indigo-600 text-white">
-                            <h2 class="text-xl font-bold">FaceTracker</h2>
-                            <p class="text-sm text-indigo-200">Deteksi ekspresi wajah secara real-time</p>
+                        <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-bold">FaceTracker</h2>
+                                <p class="text-sm text-indigo-200">Deteksi ekspresi wajah secara real-time</p>
+                            </div>
+                            <div>
+                                <button id="toggle-face-tracker" class="bg-white text-indigo-600 px-3 py-1 rounded-md text-sm font-medium hover:bg-indigo-50">
+                                    Tampilkan
+                                </button>
+                            </div>
                         </div>
                         
-                        <div class="p-4" id="face-tracker-container">
+                        <div class="p-4 hidden" id="face-tracker-container">
                             <!-- FaceTracker akan dirender di sini -->
                         </div>
                     </div>
@@ -114,52 +121,77 @@ const DiscussionComponent = {
     
     setupEventListeners: function() {
         const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message-input');
         const moodSelectors = document.querySelectorAll('.mood-selector');
+        const toggleFaceTrackerBtn = document.getElementById('toggle-face-tracker');
+        const faceTrackerContainer = document.getElementById('face-tracker-container');
         const newTopicBtn = document.getElementById('new-topic-btn');
         
-        // Set default mood
+        // Default mood is neutral if not selected
         this.selectedMood = appState.user.currentMood || 'neutral';
+        
+        // Highlight current mood
         this.highlightSelectedMood();
         
         // Mood selection
         moodSelectors.forEach(selector => {
             selector.addEventListener('click', () => {
-                // Update selected mood
-                this.selectedMood = selector.getAttribute('data-mood');
+                // Remove highlight from all selectors
+                moodSelectors.forEach(s => {
+                    s.classList.remove('ring-2', 'ring-indigo-500');
+                    s.classList.remove('scale-110');
+                });
                 
-                // Update UI
-                this.highlightSelectedMood();
+                // Add highlight to selected selector
+                selector.classList.add('ring-2', 'ring-indigo-500');
+                selector.classList.add('scale-110');
+                
+                // Store selected mood
+                this.selectedMood = selector.getAttribute('data-mood');
             });
         });
         
-        // Message submission
+        // Toggle FaceTracker visibility
+        if (toggleFaceTrackerBtn) {
+            toggleFaceTrackerBtn.addEventListener('click', () => {
+                if (faceTrackerContainer) {
+                    if (faceTrackerContainer.classList.contains('hidden')) {
+                        faceTrackerContainer.classList.remove('hidden');
+                        toggleFaceTrackerBtn.textContent = 'Sembunyikan';
+                    } else {
+                        faceTrackerContainer.classList.add('hidden');
+                        toggleFaceTrackerBtn.textContent = 'Tampilkan';
+                    }
+                }
+            });
+        }
+        
+        // Message form submission
         messageForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const messageInput = document.getElementById('message-input');
             const messageContent = messageInput.value.trim();
+            if (!messageContent) return;
             
-            if (messageContent) {
-                // Prepare message data
-                const messageData = {
-                    content: messageContent,
-                    mood: this.selectedMood
-                };
-                
-                // Save message using core function
-                core.saveMessage(messageData)
-                    .then(response => {
-                        // Clear input
-                        messageInput.value = '';
-                        
-                        // Reload chat
-                        this.loadChatHistory();
-                    })
-                    .catch(error => {
-                        console.error('Error sending message:', error);
-                        alert('Gagal mengirim pesan. Silakan coba lagi.');
-                    });
-            }
+            // Prepare message data
+            const messageData = {
+                content: messageContent,
+                mood: this.selectedMood
+            };
+            
+            // Save message using core function
+            core.saveMessage(messageData)
+                .then(response => {
+                    // Clear input
+                    messageInput.value = '';
+                    
+                    // Reload chat history to show new message
+                    this.loadChatHistory();
+                })
+                .catch(error => {
+                    console.error('Error sending message:', error);
+                    alert('Gagal mengirim pesan. Silakan coba lagi.');
+                });
         });
         
         // New topic button
@@ -173,17 +205,18 @@ const DiscussionComponent = {
     },
     
     highlightSelectedMood: function() {
-        const moodSelectors = document.querySelectorAll('.mood-selector');
-        
         // Remove highlight from all selectors
+        const moodSelectors = document.querySelectorAll('.mood-selector');
         moodSelectors.forEach(selector => {
             selector.classList.remove('ring-2', 'ring-indigo-500');
+            selector.classList.remove('scale-110');
         });
         
-        // Add highlight to selected mood
+        // Add highlight to selected selector
         const selectedSelector = document.querySelector(`.mood-selector[data-mood="${this.selectedMood}"]`);
         if (selectedSelector) {
             selectedSelector.classList.add('ring-2', 'ring-indigo-500');
+            selectedSelector.classList.add('scale-110');
         }
     },
     

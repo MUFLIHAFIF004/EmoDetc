@@ -36,12 +36,6 @@ const MoodCheckComponent = {
         `;
         
         this.container.innerHTML = html;
-        
-        // Initialize FaceTracker component
-        if (typeof FaceTrackerComponent !== 'undefined') {
-            const faceTrackerContainer = document.getElementById('face-tracker-container');
-            FaceTrackerComponent.init(faceTrackerContainer);
-        }
     },
     
     setupEventListeners: function() {

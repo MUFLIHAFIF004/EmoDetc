@@ -196,87 +196,36 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/app.js"></script>
+    <script src="js/services/mockDataService.js"></script>
     <script src="js/components/chat-history.js"></script>
     <script>
+        // Initialize when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize chat history component
+            const chatHistory = Object.create(ChatHistoryComponent);
+            chatHistory.init(document);
+            
+            // Make chat history component globally available for debugging
+            window.chatHistory = chatHistory;
+            
             // Setup mobile menu
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
             
-            // Initialize ChatHistory component
-            const container = document.querySelector('.chat-history-container');
-            if (typeof ChatHistoryComponent !== 'undefined') {
-                ChatHistoryComponent.init(container);
-            } else {
-                // Setup filter functionality if component is not available
-                const applyFilterBtn = document.getElementById('apply-filter-btn');
-                if (applyFilterBtn) {
-                    applyFilterBtn.addEventListener('click', () => {
-                        const dateFilter = document.getElementById('date-filter').value;
-                        const moodFilter = document.getElementById('mood-filter').value;
-                        const userFilter = document.getElementById('user-filter').value;
-                        
-                        const historyItems = document.querySelectorAll('.history-item');
-                        
-                        historyItems.forEach(item => {
-                            const itemMood = item.getAttribute('data-mood');
-                            const itemUser = item.getAttribute('data-user');
-                            const itemDate = item.getAttribute('data-date');
-                            
-                            let showItem = true;
-                            
-                            // Apply date filter
-                            if (dateFilter !== 'all') {
-                                const today = new Date().toISOString().split('T')[0];
-                                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-                                
-                                if (dateFilter === 'today' && itemDate !== today) {
-                                    showItem = false;
-                                } else if (dateFilter === 'yesterday' && itemDate !== yesterday) {
-                                    showItem = false;
-                                } else if (dateFilter === 'week') {
-                                    // Check if date is within the last 7 days
-                                    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
-                                    if (itemDate < weekAgo) {
-                                        showItem = false;
-                                    }
-                                } else if (dateFilter === 'month') {
-                                    // Check if date is within the last 30 days
-                                    const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0];
-                                    if (itemDate < monthAgo) {
-                                        showItem = false;
-                                    }
-                                }
-                            }
-                            
-                            // Apply mood filter
-                            if (moodFilter !== 'all' && itemMood !== moodFilter) {
-                                showItem = false;
-                            }
-                            
-                            // Apply user filter
-                            if (userFilter !== 'all' && itemUser !== userFilter) {
-                                showItem = false;
-                            }
-                            
-                            // Show or hide item
-                            item.style.display = showItem ? 'block' : 'none';
-                        });
-                    });
-                }
-                
-                // Setup export button
-                const exportBtn = document.getElementById('export-btn');
-                if (exportBtn) {
-                    exportBtn.addEventListener('click', () => {
-                        alert('Fitur export akan mengunduh riwayat chat dalam format CSV. Fitur ini belum diimplementasikan sepenuhnya.');
-                    });
-                }
+            // Filter functionality is handled by the ChatHistoryComponent
+            
+            // Setup export button
+            const exportBtn = document.getElementById('export-btn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    alert('Fitur export akan mengunduh riwayat chat dalam format CSV. Fitur ini belum diimplementasikan sepenuhnya.');
+                });
             }
         });
     </script>

@@ -11,9 +11,10 @@ const cors = require('cors');
 // ...existing code...
 // Koneksi pool ke database MySQL (edit user/password sesuai MySQL Anda)
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root', // ganti jika user MySQL Anda berbeda
-    password: '', // ganti jika ada password
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
     database: 'emodetc',
     waitForConnections: true,
     connectionLimit: 10,

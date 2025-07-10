@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/img/emodetc.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Leader - EmoDetc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --sidebar-width: 280px;
+            --border-radius: 12px;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        .app-container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 30px rgba(0,0,0,0.1);
+        }
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .logo i { font-size: 1.8rem; margin-right: 0.75rem; color: #4cc9f0; }
+        .sidebar-menu { padding: 1.5rem 0.75rem; flex-grow: 1; }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            color: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-link.active, .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
+            padding: 2.5rem 2rem 2rem;
+            background: #f9fafb;
+        }
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.07);
+            border: none;
+        }
+    </style>
+    <script>
+    // Proteksi akses: hanya leader
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const res = await fetch('/api/me');
+            if (!res.ok) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const data = await res.json();
+            if (!data.user || data.user.role !== 'leader') {
+                if (data.user && data.user.role === 'admin') window.location.href = '/admin/dashboard';
+                else if (data.user && data.user.role === 'user') window.location.href = '/user/dashboard';
+                else window.location.href = 'login.html';
+            }
+        } catch (e) {
+            window.location.href = 'login.html';
+        }
+    });
+    </script>
+</head>
+<body>
+<div class="app-container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="logo"><i class="fas fa-chalkboard-teacher"></i>EmoDetc</a>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/leader/dashboard" class="nav-link">Dashboard</a>
+            <a href="/leader/room" class="nav-link active">Room</a>
+        </div>
+        <div class="sidebar-footer mt-auto">
+            <a href="#" class="nav-link text-white-50"><i class="fas fa-cog me-2"></i>Pengaturan</a>
+            <a href="#" class="nav-link text-white-50" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card p-4">
+                        <h3 class="mb-4"><i class="fas fa-comments me-2"></i>Manajemen Room</h3>
+                        <div id="roomSection">
+            <!-- Tombol Buat Room -->
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-primary" onclick="showCreateRoomModal()">
+                    <i class="fas fa-plus-circle me-2"></i>Buat Ruangan
+                </button>
+            </div>
+            <!-- Modal Buat Room -->
+            <div class="modal fade" id="createRoomModal" tabindex="-1" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="createRoomModalLabel">Buat Ruangan Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeCreateRoomModal()"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="createRoomForm">
+                      <div class="mb-3">
+                        <label for="roomName" class="form-label">Nama Ruangan</label>
+                        <input type="text" class="form-control" id="roomName" required placeholder="Contoh: Kelas 7A">
+                      </div>
+                      <div class="mb-3">
+                        <label for="roomDesc" class="form-label">Deskripsi (opsional)</label>
+                        <textarea class="form-control" id="roomDesc" rows="2" placeholder="Deskripsi singkat ruangan"></textarea>
+                      </div>
+                      <div id="roomResult" class="mb-3"></div>
+                      <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle me-2"></i>Buat Ruangan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Daftar Room -->
+            <h5 class="mb-3">Daftar Room Anda</h5>
+            <ul class="list-group" id="roomList">
+                <!-- Room list render here -->
+            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+// Modal Buat Room
+function showCreateRoomModal() {
+    const modal = document.getElementById('createRoomModal');
+    modal.classList.add('show');
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+}
+function closeCreateRoomModal() {
+    const modal = document.getElementById('createRoomModal');
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+}
+
+// Ambil dan render daftar room dari backend
+async function fetchRooms() {
+    try {
+        const res = await fetch('/api/rooms');
+        const data = await res.json();
+        if (res.ok && data.success) {
+            renderRooms(data.rooms);
+        } else {
+            document.getElementById('roomList').innerHTML = '<li class="list-group-item text-danger">Gagal memuat data room.</li>';
+        }
+    } catch (err) {
+        document.getElementById('roomList').innerHTML = '<li class="list-group-item text-danger">Terjadi kesalahan koneksi.</li>';
+    }
+}
+
+// Render tabel room
+function renderRooms(rooms) {
+    const roomList = document.getElementById('roomList');
+    roomList.innerHTML = '';
+    if (!rooms || rooms.length === 0) {
+        roomList.innerHTML = '<li class="list-group-item text-center text-muted">Belum ada room.</li>';
+        return;
+    }
+    rooms.forEach((room, idx) => {
+        const statusBadge = room.ended ?
+            '<span class="badge bg-secondary ms-2">Selesai</span>' :
+            '<span class="badge bg-success ms-2">Aktif</span>';
+        let actionButtons = '';
+        // Tombol selalu ada
+        actionButtons += `<button class='btn btn-sm btn-outline-info' title="Anggota" onclick="window.location.href='/leader/room-members?code=${room.code}'"><i class='fas fa-users'></i></button>`;
+        actionButtons += `<button class='btn btn-sm btn-outline-success' title="Statistik" onclick="window.location.href='/leader/room-stats?code=${room.code}'"><i class='fas fa-chart-bar'></i></button>`;
+        actionButtons += `<button class='btn btn-sm btn-outline-primary' title="Masuk ke Room" onclick="window.location.href='/chat.html?code=${room.code}'"><i class='fas fa-sign-in-alt'></i> Masuk</button>`;
+        if (!room.ended) {
+            actionButtons = `<button class='btn btn-sm btn-outline-primary' onclick="copyCode('${room.code}')"><i class='far fa-copy me-1'></i>Salin Kode</button>` + actionButtons;
+            actionButtons += `<button class='btn btn-sm btn-outline-warning end-btn' data-code='${room.code}' data-ended='${room.ended}'><i class='fas fa-stop-circle'></i></button>`;
+        }
+        actionButtons += `<button class='btn btn-sm btn-outline-danger delete-btn' data-code='${room.code}' data-ended='${room.ended}'><i class='fas fa-trash'></i></button>`;
+        roomList.innerHTML += `
+        <li class='list-group-item d-flex justify-content-between align-items-center'>
+            <div>
+                <strong>${room.name}</strong> <span class='text-muted'>[${room.code}]</span> ${statusBadge}<br>
+                <small>${room.desc || ''}</small>
+            </div>
+            <div class="d-flex gap-2">
+                ${actionButtons}
+            </div>
+        </li>`;
+    });
+
+    // Tambahkan event handler untuk End Sesi dan Hapus
+    document.querySelectorAll('.end-btn').forEach(btn => {
+        btn.onclick = async function() {
+            const code = btn.getAttribute('data-code');
+            const ended = btn.getAttribute('data-ended') === '1' || btn.getAttribute('data-ended') === 'true';
+            if (ended) {
+                alert('Sesi sudah diakhiri.');
+                return;
+            }
+            if (!confirm('Akhiri sesi room ini?')) return;
+            btn.disabled = true;
+            try {
+                const res = await fetch(`/api/rooms/${encodeURIComponent(code)}/end`, { method: 'POST' });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    fetchRooms();
+                } else {
+                    alert(data.error || 'Gagal mengakhiri sesi.');
+                }
+            } catch (err) {
+                alert('Gagal koneksi ke server.');
+            }
+            btn.disabled = false;
+        };
+    });
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = async function() {
+            const code = btn.getAttribute('data-code');
+            const ended = btn.getAttribute('data-ended') === '1' || btn.getAttribute('data-ended') === 'true';
+            if (!ended) {
+                alert('Room hanya bisa dihapus setelah sesi diakhiri.');
+                return;
+            }
+            if (!confirm('Hapus room ini? Semua data akan hilang!')) return;
+            btn.disabled = true;
+            try {
+                const res = await fetch(`/api/rooms/${encodeURIComponent(code)}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    fetchRooms();
+                } else {
+                    alert(data.error || 'Gagal menghapus room.');
+                }
+            } catch (err) {
+                alert('Gagal koneksi ke server.');
+            }
+            btn.disabled = false;
+        };
+    });
+}
+
+function copyCode(code) {
+    navigator.clipboard.writeText(code);
+    alert('Kode undangan berhasil disalin: ' + code);
+}
+
+// Form submit (modal)
+const form = document.getElementById('createRoomForm');
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const name = document.getElementById('roomName').value.trim();
+    const desc = document.getElementById('roomDesc').value.trim();
+    if (!name) {
+        document.getElementById('roomResult').innerHTML = '<div class="alert alert-danger">Nama ruangan wajib diisi!</div>';
+        return;
+    }
+    try {
+        const res = await fetch('/api/rooms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, desc })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            document.getElementById('roomResult').innerHTML = `<div class='alert alert-success'>Ruangan berhasil dibuat! Kode: <b>${data.code}</b></div>`;
+            form.reset();
+            fetchRooms();
+            setTimeout(() => {
+                closeCreateRoomModal();
+                document.getElementById('roomResult').innerHTML = '';
+            }, 1200);
+        } else {
+            document.getElementById('roomResult').innerHTML = `<div class='alert alert-danger'>${data.error || 'Gagal membuat ruangan.'}</div>`;
+        }
+    } catch (err) {
+        document.getElementById('roomResult').innerHTML = '<div class="alert alert-danger">Terjadi kesalahan koneksi.</div>';
+    }
+});
+
+// Inisialisasi: ambil data room saat halaman dibuka
+fetchRooms();
+
+// Logout handler
+document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+    e.preventDefault();
+    try {
+        const res = await fetch('/api/logout', { method: 'POST' });
+        if (res.ok) {
+            window.location.href = '/login.html';
+        } else {
+            alert('Logout gagal.');
+        }
+    } catch (err) {
+        alert('Logout gagal.');
+    }
+});
+</script>
+</body>
+</html>

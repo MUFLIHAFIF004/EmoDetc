@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/img/emodetc.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistik Emosi Saya</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/emotionStats.js"></script>
+    <script src="js/user-stats.js"></script>
+    <style>
+        .stats-container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 32px 24px; }
+        .stats-header { text-align: center; margin-bottom: 24px; }
+        .stats-header h2 { margin: 0 0 8px 0; font-size: 2em; color: #4a6cf7; }
+        .stats-header p { color: #888; margin: 0; }
+        #userEmotionChart { margin: 32px 0 16px 0; }
+        .back-btn { display: inline-block; margin-bottom: 18px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-weight: bold; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+        .back-btn:hover { background: #2d4db7; }
+    </style>
+</head>
+<body>
+    <div class="stats-container">
+        <button class="back-btn" onclick="goBackToDashboard()">Kembali ke Dashboard</button>
+        <div class="stats-header">
+            <h2>Statistik Emosi Saya</h2>
+            <p id="statsUsername"></p>
+        </div>
+        <canvas id="userEmotionChart" height="120"></canvas>
+        <div id="userEmotionAverages"></div>
+    </div>
+</body>
+</html>

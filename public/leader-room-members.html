@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/img/emodetc.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anggota Ruangan - EmoDetc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+            color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(99,102,241,0.10);
+            border: none;
+            max-width: 520px;
+            width: 100%;
+        }
+        .table thead th {
+            background: #6366f1;
+            color: #fff;
+        }
+    </style>
+    <script>
+    // Proteksi akses: hanya leader
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const res = await fetch('/api/me');
+            if (!res.ok) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const data = await res.json();
+            if (!data.user || data.user.role !== 'leader') {
+                if (data.user && data.user.role === 'admin') window.location.href = '/admin/dashboard';
+                else if (data.user && data.user.role === 'user') window.location.href = '/user/dashboard';
+                else window.location.href = 'login.html';
+            }
+        } catch (e) {
+            window.location.href = 'login.html';
+        }
+    });
+    </script>
+</head>
+<body>
+<div class="card p-4">
+    <h3 class="mb-4 text-center"><i class="fas fa-users me-2"></i>Daftar Anggota Ruangan</h3>
+    <div class="mb-3">
+        <label for="roomCode" class="form-label">Kode Ruangan</label>
+        <input type="text" class="form-control" id="roomCode" placeholder="Masukkan kode ruangan" autofocus>
+    </div>
+    <div class="d-grid mb-3">
+        <button class="btn btn-primary" onclick="fetchMembers()"><i class="fas fa-search me-2"></i>Cek Anggota</button>
+    </div>
+    <div id="result"></div>
+    <div id="membersSection" style="display:none;">
+        <h5 class="mt-4 mb-2">Anggota:</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nama</th>
+                    <th>Bergabung</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="membersList">
+                <!-- Data anggota -->
+            </tbody>
+        </table>
+    </div>
+    <div class="d-grid mt-3">
+        <a id="btnBackToRoom" href="/leader/room" class="btn btn-outline-secondary mb-2">Kembali ke Daftar Room</a>
+        <a id="btnBackToRoomDetail" href="#" class="btn btn-secondary">Kembali ke Room Ini</a>
+    </div>
+</div>
+<script>
+// Auto isi kode ruangan dari query string jika ada
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+        document.getElementById('roomCode').value = code;
+        fetchMembers();
+        // Set link kembali ke room detail
+        document.getElementById('btnBackToRoomDetail').href = `/leader/room?code=${encodeURIComponent(code)}`;
+        document.getElementById('btnBackToRoomDetail').style.display = '';
+    } else {
+        document.getElementById('btnBackToRoomDetail').style.display = 'none';
+    }
+});
+</script>
+<script>
+async function fetchMembers() {
+    const code = document.getElementById('roomCode').value.trim();
+    if (!code) {
+        document.getElementById('result').innerHTML = '<div class="alert alert-danger">Kode ruangan wajib diisi.</div>';
+        document.getElementById('membersSection').style.display = 'none';
+        return;
+    }
+    document.getElementById('result').innerHTML = '';
+    try {
+        const res = await fetch(`/api/rooms/${code}/members`);
+        const data = await res.json();
+        if (res.ok && data.success) {
+            renderMembers(data.members);
+        } else {
+            document.getElementById('result').innerHTML = `<div class='alert alert-danger'>${data.error || 'Gagal memuat anggota.'}</div>`;
+            document.getElementById('membersSection').style.display = 'none';
+        }
+    } catch (err) {
+        document.getElementById('result').innerHTML = '<div class="alert alert-danger">Terjadi kesalahan koneksi.</div>';
+        document.getElementById('membersSection').style.display = 'none';
+    }
+}
+function renderMembers(members) {
+    const tbody = document.getElementById('membersList');
+    tbody.innerHTML = '';
+    if (!members || members.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Belum ada anggota.</td></tr>';
+        document.getElementById('membersSection').style.display = 'block';
+        return;
+    }
+    members.forEach((m, i) => {
+        let aksi = '';
+        if (m.isLeader) {
+            aksi = '<span class="badge bg-primary">Leader</span>';
+        } else {
+            aksi = `<button class="btn btn-danger btn-sm" onclick="kickMember('${m.id}')">Kick</button>`;
+        }
+        tbody.innerHTML += `<tr><td>${i+1}</td><td>${m.name}</td><td>${m.joined_at ? new Date(m.joined_at).toLocaleString() : '-'}</td><td>${aksi}</td></tr>`;
+    });
+    document.getElementById('membersSection').style.display = 'block';
+}
+
+async function kickMember(userId) {
+    const code = document.getElementById('roomCode').value.trim();
+    if (!code || !userId) return;
+    if (!confirm('Yakin ingin mengeluarkan anggota ini dari room?')) return;
+    try {
+        const res = await fetch(`/api/rooms/${code}/members/${userId}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            fetchMembers();
+        } else {
+            alert(data.error || 'Gagal mengeluarkan anggota.');
+        }
+    } catch (e) {
+        alert('Terjadi kesalahan koneksi.');
+    }
+}
+</script>
+</body>
+</html>
